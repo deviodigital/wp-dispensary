@@ -124,6 +124,17 @@ if ( class_exists( 'WPD_ADMIN_SETTINGS' ) ) {
 		);
 	}
 
+	// Check if WPD METRC is active.
+	if ( is_plugin_active( 'wpd-metrc/wpd-metrc.php' ) ) {
+		// Section: Metrc.
+		$wpdas_obj->add_section(
+			array(
+				'id'    => 'wpdas_metrc',
+				'title' => esc_attr__( 'Metrc', 'wp-dispensary' ),
+			)
+		);
+	}
+
 	// Check if WPD eCommerce is active.
 	if ( ! is_plugin_active( 'wpd-ecommerce/wpd-ecommerce.php' ) ) {
 		/**
@@ -789,6 +800,49 @@ if ( class_exists( 'WPD_ADMIN_SETTINGS' ) ) {
 			)
 		);
 
+	}
+
+	// Check if WP Dispensary's Connect for METRC is active.
+	if ( is_plugin_active( 'wpd-metrc/wpd-metrc.php' ) ) {
+		/**
+		 * Add Field: Display a title to help separate fields
+		 * Field:     title
+		 * Section:   wpdas_metrc
+		 */
+		$wpdas_obj->add_field(
+			'wpdas_metrc',
+			array(
+				'id'   => 'wpd_settings_metrc',
+				'type' => 'title',
+				'name' => '<h1>' . esc_attr__( 'Metrc', 'wp-dispensary' ) . '</h1>',
+			)
+		);
+		/**
+		 * Add Field: Metrc Vendor API key
+		 * Field:     text
+		 * Section:   wpdas_metrc
+		 */
+		$wpdas_obj->add_field(
+			'wpdas_metrc',
+			array(
+				'id'   => 'wpd_ecommerce_metrc_vendor_api_key',
+				'type' => 'text',
+				'name' => esc_attr__( 'Vendor API Key', 'wp-dispensary' ),
+			)
+		);
+		/**
+		 * Add Field: Metrc User API key
+		 * Field:     text
+		 * Section:   wpdas_metrc
+		 */
+		$wpdas_obj->add_field(
+			'wpdas_metrc',
+			array(
+				'id'   => 'wpd_ecommerce_metrc_user_api_key',
+				'type' => 'text',
+				'name' => esc_attr__( 'User API Key', 'wp-dispensary' ),
+			)
+		);
 	}
 
 } // end WPD_ADMIN_SETTINGS check
