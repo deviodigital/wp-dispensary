@@ -129,8 +129,8 @@ if ( class_exists( 'WPD_ADMIN_SETTINGS' ) ) {
 		// Section: Metrc.
 		$wpdas_obj->add_section(
 			array(
-				'id'    => 'wpdas_metrc',
-				'title' => esc_attr__( 'Metrc', 'wp-dispensary' ),
+				'id'    => 'wpdas_advanced',
+				'title' => esc_attr__( 'Advanced', 'wp-dispensary' ),
 			)
 		);
 	}
@@ -807,10 +807,10 @@ if ( class_exists( 'WPD_ADMIN_SETTINGS' ) ) {
 		/**
 		 * Add Field: Display a title to help separate fields
 		 * Field:     title
-		 * Section:   wpdas_metrc
+		 * Section:   wpdas_advanced
 		 */
 		$wpdas_obj->add_field(
-			'wpdas_metrc',
+			'wpdas_advanced',
 			array(
 				'id'   => 'wpd_settings_metrc',
 				'type' => 'title',
@@ -820,10 +820,10 @@ if ( class_exists( 'WPD_ADMIN_SETTINGS' ) ) {
 		/**
 		 * Add Field: Metrc Vendor API key
 		 * Field:     text
-		 * Section:   wpdas_metrc
+		 * Section:   wpdas_advanced
 		 */
 		$wpdas_obj->add_field(
-			'wpdas_metrc',
+			'wpdas_advanced',
 			array(
 				'id'   => 'wpd_ecommerce_metrc_vendor_api_key',
 				'type' => 'text',
@@ -833,10 +833,10 @@ if ( class_exists( 'WPD_ADMIN_SETTINGS' ) ) {
 		/**
 		 * Add Field: Metrc User API key
 		 * Field:     text
-		 * Section:   wpdas_metrc
+		 * Section:   wpdas_advanced
 		 */
 		$wpdas_obj->add_field(
-			'wpdas_metrc',
+			'wpdas_advanced',
 			array(
 				'id'   => 'wpd_ecommerce_metrc_user_api_key',
 				'type' => 'text',
