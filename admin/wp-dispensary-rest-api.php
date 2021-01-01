@@ -34,12 +34,7 @@ function wpd_rest_featured_image_url( $data, $post, $request ) {
 	$data->data                  = $_data;
 	return $data;
 }
-add_filter( 'rest_prepare_flowers', 'wpd_rest_featured_image_url', 10, 3 );
-add_filter( 'rest_prepare_concentrates', 'wpd_rest_featured_image_url', 10, 3 );
-add_filter( 'rest_prepare_edibles', 'wpd_rest_featured_image_url', 10, 3 );
-add_filter( 'rest_prepare_prerolls', 'wpd_rest_featured_image_url', 10, 3 );
-add_filter( 'rest_prepare_topicals', 'wpd_rest_featured_image_url', 10, 3 );
-add_filter( 'rest_prepare_growers', 'wpd_rest_featured_image_url', 10, 3 );
+add_filter( 'rest_prepare_products', 'wpd_rest_featured_image_url', 10, 3 );
 
 /**
  * Adding featured image URL's to Flowers Custom Post Type
@@ -68,23 +63,17 @@ function wpd_rest_featured_images( $data, $post, $request ) {
 	$data->data                        = $_data;
 	return $data;
 }
-add_filter( 'rest_prepare_flowers', 'wpd_rest_featured_images', 10, 3 );
-add_filter( 'rest_prepare_concentrates', 'wpd_rest_featured_images', 10, 3 );
-add_filter( 'rest_prepare_edibles', 'wpd_rest_featured_images', 10, 3 );
-add_filter( 'rest_prepare_prerolls', 'wpd_rest_featured_images', 10, 3 );
-add_filter( 'rest_prepare_topicals', 'wpd_rest_featured_images', 10, 3 );
-add_filter( 'rest_prepare_growers', 'wpd_rest_featured_images', 10, 3 );
-
+add_filter( 'rest_prepare_products', 'wpd_rest_featured_images', 10, 3 );
 
 /**
- * Add 'categories' endpoint for the Flowers Custom Post Type
+ * Add 'categories' endpoint for the Products Custom Post Type
  *
- * @since 2.0.2
+ * @since 4.0
  */
-function flowers_category_numbers( $data, $post, $request ) {
+function products_category_numbers( $data, $post, $request ) {
 
 	$_data = $data->data;
-	$items = wp_get_post_terms( $post->ID, 'flowers_category' );
+	$items = wp_get_post_terms( $post->ID, 'product_category' );
 
 	foreach ( $items as $item=>$value ) {
 		$_data['categories'][$item]['id']          = $value->term_id;
@@ -98,7 +87,7 @@ function flowers_category_numbers( $data, $post, $request ) {
 
 	return $data;
 }
-add_filter( 'rest_prepare_flowers', 'flowers_category_numbers', 10, 3 );
+add_filter( 'rest_prepare_products', 'products_category_numbers', 10, 3 );
 
 /**
  * Add 'prices' endpoint for the Custom Post Types
@@ -111,70 +100,30 @@ function wpd_product_prices_all( $data, $post, $request ) {
 	$data->data      = $_data;
 	return $data;
 }
-add_filter( 'rest_prepare_flowers', 'wpd_product_prices_all', 10, 3 );
-add_filter( 'rest_prepare_concentrates', 'wpd_product_prices_all', 10, 3 );
-add_filter( 'rest_prepare_edibles', 'wpd_product_prices_all', 10, 3 );
-add_filter( 'rest_prepare_prerolls', 'wpd_product_prices_all', 10, 3 );
-add_filter( 'rest_prepare_topicals', 'wpd_product_prices_all', 10, 3 );
-add_filter( 'rest_prepare_growers', 'wpd_product_prices_all', 10, 3 );
+add_filter( 'rest_prepare_products', 'wpd_product_prices_all', 10, 3 );
 
 /**
- * Add Aroma taxonomy for the Flowers Custom Post Type
+ * Add custom taxonomies to Products
+ * 
+ * @since 4.0
  */
-function flowers_aroma( $data, $post, $request ) {
-	$_data           = $data->data;
-	$_data['aromas'] = get_the_term_list( $post->ID, 'aroma', '', ' ', '' );
-	$data->data      = $_data;
+function products_taxonomies( $data, $post, $request ) {
+	$_data                 = $data->data;
+	$_data['aromas']       = get_the_term_list( $post->ID, 'aroma', '', ' ', '' );
+	$_data['flavors']      = get_the_term_list( $post->ID, 'flavor', '', ' ', '' );
+	$_data['effects']      = get_the_term_list( $post->ID, 'effect', '', ' ', '' );
+	$_data['symptoms']     = get_the_term_list( $post->ID, 'symptom', '', ' ', '' );
+	$_data['conditions']   = get_the_term_list( $post->ID, 'condition', '', ' ', '' );
+	$_data['shelf_types']  = get_the_term_list( $post->ID, 'shelf_type', '', ' ', '' );
+	$_data['strain_types'] = get_the_term_list( $post->ID, 'strain_type', '', ' ', '' );
+	$_data['vendors']      = get_the_term_list( $post->ID, 'vendor', '', ' ', '' );
+	$data->data            = $_data;
 	return $data;
 }
-add_filter( 'rest_prepare_flowers', 'flowers_aroma', 10, 3 );
+add_filter( 'rest_prepare_products', 'products_taxonomies', 10, 3 );
 
 /**
- * Add Flavor taxonomy for the Flowers Custom Post Type
- */
-function flowers_flavor( $data, $post, $request ) {
-	$_data            = $data->data;
-	$_data['flavors'] = get_the_term_list( $post->ID, 'flavor', '', ' ', '' );
-	$data->data       = $_data;
-	return $data;
-}
-add_filter( 'rest_prepare_flowers', 'flowers_flavor', 10, 3 );
-
-/**
- * Add Effect taxonomy for the Flowers Custom Post Type
- */
-function flowers_effect( $data, $post, $request ) {
-	$_data            = $data->data;
-	$_data['effects'] = get_the_term_list( $post->ID, 'effect', '', ' ', '' );
-	$data->data       = $_data;
-	return $data;
-}
-add_filter( 'rest_prepare_flowers', 'flowers_effect', 10, 3 );
-
-/**
- * Add Symptom taxonomy for the Flowers Custom Post Type
- */
-function flowers_symptom( $data, $post, $request ) {
-	$_data             = $data->data;
-	$_data['symptoms'] = get_the_term_list( $post->ID, 'symptom', '', ' ', '' );
-	$data->data        = $_data;
-	return $data;
-}
-add_filter( 'rest_prepare_flowers', 'flowers_symptom', 10, 3 );
-
-/**
- * Add Condition taxonomy for the Flowers Custom Post Type
- */
-function flowers_condition( $data, $post, $request ) {
-	$_data               = $data->data;
-	$_data['conditions'] = get_the_term_list( $post->ID, 'condition', '', ' ', '' );
-	$data->data          = $_data;
-	return $data;
-}
-add_filter( 'rest_prepare_flowers', 'flowers_condition', 10, 3 );
-
-/**
- * Add 'details' endpoint for the Custom Post Types
+ * Add 'details' endpoint to Products
  *
  * @since 2.7
  */
@@ -204,137 +153,7 @@ function wpd_product_details_all( $data, $post, $request ) {
 	return $data;
 
 }
-add_filter( 'rest_prepare_flowers', 'wpd_product_details_all', 10, 3 );
-add_filter( 'rest_prepare_concentrates', 'wpd_product_details_all', 10, 3 );
-add_filter( 'rest_prepare_edibles', 'wpd_product_details_all', 10, 3 );
-add_filter( 'rest_prepare_prerolls', 'wpd_product_details_all', 10, 3 );
-add_filter( 'rest_prepare_topicals', 'wpd_product_details_all', 10, 3 );
-add_filter( 'rest_prepare_growers', 'wpd_product_details_all', 10, 3 );
-
-/**
- * Add 'categories' endpoint for the Concentrates Custom Post Type
- *
- * @since 2.0.2
- */
-function concentrates_category_numbers( $data, $post, $request ) {
-
-	$_data = $data->data;
-	$items = wp_get_post_terms( $post->ID, 'concentrates_category' );
-
-	foreach ( $items as $item=>$value ) {
-		$_data['categories'][$item]['id']          = $value->term_id;
-		$_data['categories'][$item]['slug']        = $value->slug;
-		$_data['categories'][$item]['title']       = $value->name;
-		$_data['categories'][$item]['description'] = $value->description;
-		$_data['categories'][$item]['count']       = $value->count;
-	}
-
-	$data->data = $_data;
-
-	return $data;
-}
-add_filter( 'rest_prepare_concentrates', 'concentrates_category_numbers', 10, 3 );
-
-/**
- * Add Aroma taxonomy for the Concentrates Custom Post Type
- */
-function concentrates_aroma( $data, $post, $request ) {
-	$_data           = $data->data;
-	$_data['aromas'] = get_the_term_list( $post->ID, 'aroma', '', ' ', '' );
-	$data->data      = $_data;
-	return $data;
-}
-add_filter( 'rest_prepare_concentrates', 'concentrates_aroma', 10, 3 );
-
-/**
- * Add Flavor taxonomy for the Concentrates Custom Post Type
- */
-function concentrates_flavor( $data, $post, $request ) {
-	$_data            = $data->data;
-	$_data['flavors'] = get_the_term_list( $post->ID, 'flavor', '', ' ', '' );
-	$data->data       = $_data;
-	return $data;
-}
-add_filter( 'rest_prepare_concentrates', 'concentrates_flavor', 10, 3 );
-
-/**
- * Add Effect taxonomy for the Concentrates Custom Post Type
- */
-function concentrates_effect( $data, $post, $request ) {
-	$_data            = $data->data;
-	$_data['effects'] = get_the_term_list( $post->ID, 'effect', '', ' ', '' );
-	$data->data       = $_data;
-	return $data;
-}
-add_filter( 'rest_prepare_concentrates', 'concentrates_effect', 10, 3 );
-
-/**
- * Add Symptom taxonomy for the Concentrates Custom Post Type
- */
-function concentrates_symptom( $data, $post, $request ) {
-	$_data             = $data->data;
-	$_data['symptoms'] = get_the_term_list( $post->ID, 'symptom', '', ' ', '' );
-	$data->data        = $_data;
-	return $data;
-}
-add_filter( 'rest_prepare_concentrates', 'concentrates_symptom', 10, 3 );
-
-/**
- * Add Condition taxonomy for the Concentrates Custom Post Type
- */
-function concentrates_condition( $data, $post, $request ) {
-	$_data               = $data->data;
-	$_data['conditions'] = get_the_term_list( $post->ID, 'condition', '', ' ', '' );
-	$data->data          = $_data;
-	return $data;
-}
-add_filter( 'rest_prepare_concentrates', 'concentrates_condition', 10, 3 );
-
-/**
- * Add 'categories' endpoint for the Edibles Custom Post Type
- *
- * @since 2.0.2
- */
-function edibles_category_numbers( $data, $post, $request ) {
-
-	$_data = $data->data;
-	$items = wp_get_post_terms( $post->ID, 'edibles_category' );
-
-	foreach ( $items as $item=>$value ) {
-		$_data['categories'][$item]['id']          = $value->term_id;
-		$_data['categories'][$item]['slug']        = $value->slug;
-		$_data['categories'][$item]['title']       = $value->name;
-		$_data['categories'][$item]['description'] = $value->description;
-		$_data['categories'][$item]['count']       = $value->count;
-	}
-
-	$data->data = $_data;
-	return $data;
-}
-add_filter( 'rest_prepare_edibles', 'edibles_category_numbers', 10, 3 );
-
-/**
- * Add 'categories' endpoint for the Topicals Custom Post Type
- *
- * @since 2.0.2
- */
-function topicals_category_numbers( $data, $post, $request ) {
-
-	$_data = $data->data;
-	$items = wp_get_post_terms( $post->ID, 'topicals_category' );
-
-	foreach ( $items as $item=>$value ) {
-		$_data['categories'][$item]['id']          = $value->term_id;
-		$_data['categories'][$item]['slug']        = $value->slug;
-		$_data['categories'][$item]['title']       = $value->name;
-		$_data['categories'][$item]['description'] = $value->description;
-		$_data['categories'][$item]['count']       = $value->count;
-	}
-
-	$data->data = $_data;
-	return $data;
-}
-add_filter( 'rest_prepare_topicals', 'topicals_category_numbers', 10, 3 );
+add_filter( 'rest_prepare_products', 'wpd_product_details_all', 10, 3 );
 
 /**
  * This adds the wpdispensary_prices metafields to the
@@ -347,7 +166,7 @@ add_filter( 'rest_prepare_topicals', 'topicals_category_numbers', 10, 3 );
  * Registering Prices
  */
 function slug_register_prices() {
-	$productsizes = apply_filters( 'wpd_rest_api_register_flowers_prices', array( '_gram', '_twograms', '_eighth', '_fivegrams', '_quarter', '_halfounce', '_ounce' ) );
+	$productsizes = apply_filters( 'wpd_rest_api_register_flowers_prices', array( 'price_gram', 'price_two_grams', 'price_eighth', 'price_five_grams', 'price_quarter_ounce', 'price_half_ounce', 'price_ounce' ) );
 	foreach ( $productsizes as $size ) {
 		register_rest_field(
 			array( 'flowers' ),
@@ -387,7 +206,7 @@ function slug_update_prices( $value, $object, $field_name ) {
  * Registering Prices
  */
 function slug_register_concentrateprices() {
-	$productsizes = apply_filters( 'wpd_rest_api_register_concentrates_prices', array( '_priceeach', '_halfgram', '_gram', '_twograms' ) );
+	$productsizes = apply_filters( 'wpd_rest_api_register_concentrates_prices', array( 'price_each', 'price_half_gram', 'price_gram', 'price_two_grams' ) );
 	foreach ( $productsizes as $size ) {
 		register_rest_field(
 			array( 'concentrates' ),
@@ -427,7 +246,7 @@ function slug_update_concentrateprices( $value, $object, $field_name ) {
  * Register Edible information
  */
 function slug_register_edibleinfo() {
-	$edibleinformation = apply_filters( 'wpd_rest_api_register_edibles_info', array( '_thcmg', '_thcservings', '_priceeach', '_unitsperpack', 'priceperpack' ) );
+	$edibleinformation = apply_filters( 'wpd_rest_api_register_edibles_info', array( 'compounds_thc', 'product_servings', 'price_each', 'units_per_pack', 'price_per_pack' ) );
 	foreach ( $edibleinformation as $edibleinfo ) {
 		register_rest_field(
 			'edibles',
@@ -467,7 +286,7 @@ function slug_update_edibleinfo( $value, $object, $field_name ) {
  * Register Pre-roll info
  */
 function slug_register_prerollinfo() {
-	$prerollinformation = apply_filters( 'wpd_rest_api_register_prerolls_info', array( '_priceeach', '_selected_flowers', '_unitsperpack', 'priceperpack', '_preroll_weight' ) );
+	$prerollinformation = apply_filters( 'wpd_rest_api_register_prerolls_info', array( 'price_each', 'product_flower', 'units_per_pack', 'price_per_pack', 'product_weight' ) );
 	foreach ( $prerollinformation as $prerollinfo ) {
 		register_rest_field(
 			'prerolls',
@@ -510,7 +329,7 @@ function slug_register_compounds() {
 	/**
 	 * @todo add function instead of array.
 	 */
-	$compounds = array( '_thc', '_thca', '_cbd', '_cba', '_cbn', '_cbg' );
+	$compounds = array( 'compound_thc', 'compound_thca', 'compound_cbd', 'compound_cba', 'compound_cbn', 'compound_cbg' );
 	foreach ( $compounds as $compound ) {
 		register_rest_field(
 			array( 'flowers', 'concentrates' ),
@@ -550,7 +369,7 @@ function slug_update_compounds( $value, $object, $field_name ) {
  * Register Topical info
  */
 function slug_register_topicalinfo() {
-	$topicalinformation = apply_filters( 'wpd_rest_api_register_topicals_info', array( '_pricetopical', '_unitsperpack', 'priceperpack', '_thctopical', '_cbdtopical', '_sizetopical' ) );
+	$topicalinformation = apply_filters( 'wpd_rest_api_register_topicals_info', array( 'price_each', 'units_per_pack', 'price_per_pack', 'compound_thc', 'compound_cbd', 'product_size' ) );
 	foreach ( $topicalinformation as $topicalinfo ) {
 		register_rest_field(
 			'topicals',
@@ -590,7 +409,7 @@ function slug_update_topicalinfo( $value, $object, $field_name ) {
  * Register Grower info
  */
 function slug_register_growerinfo() {
-	$growerinformation = apply_filters( 'wpd_rest_api_register_growers_info', array( '_priceeach', '_unitsperpack', 'priceperpack', '_selected_flowers', '_seedcount', '_clonecount', '_time', '_origin', '_yield', '_difficulty' ) );
+	$growerinformation = apply_filters( 'wpd_rest_api_register_growers_info', array( 'price_each', 'units_per_pack', 'price_per_pack', 'product_flower', 'seed_count', 'clone_count', 'product_time', 'product_origin', 'product_yield', 'product_difficulty' ) );
 	foreach ( $growerinformation as $growerinfo ) {
 		register_rest_field(
 			'growers',
@@ -618,78 +437,3 @@ function slug_get_growerinfo( $object, $field_name, $request ) {
 function slug_update_growerinfo( $value, $object, $field_name ) {
 	return update_post_meta( $object->ID, $field_name, $value );
 }
-
-/**
- * Add 'categories' endpoint for the Growers Custom Post Type
- *
- * @since 2.0.2
- */
-function growers_category_numbers( $data, $post, $request ) {
-
-	$_data = $data->data;
-	$items = wp_get_post_terms( $post->ID, 'growers_category' );
-
-	foreach ( $items as $item=>$value ) {
-		$_data['categories'][$item]['id']          = $value->term_id;
-		$_data['categories'][$item]['slug']        = $value->slug;
-		$_data['categories'][$item]['title']       = $value->name;
-		$_data['categories'][$item]['description'] = $value->description;
-		$_data['categories'][$item]['count']       = $value->count;
-	}
-
-	$data->data = $_data;
-
-	return $data;
-}
-add_filter( 'rest_prepare_growers', 'growers_category_numbers', 10, 3 );
-
-
-/**
- * Add Vendors taxonomy for all Custom Post Types
- */
-function wpd_vendor( $data, $post, $request ) {
-	$_data            = $data->data;
-	$_data['vendors'] = get_the_term_list( $post->ID, 'vendor', '', ' ', '' );
-	$data->data       = $_data;
-	return $data;
-}
-add_filter( 'rest_prepare_flowers', 'wpd_vendor', 10, 3 );
-add_filter( 'rest_prepare_concentrates', 'wpd_vendor', 10, 3 );
-add_filter( 'rest_prepare_edibles', 'wpd_vendor', 10, 3 );
-add_filter( 'rest_prepare_prerolls', 'wpd_vendor', 10, 3 );
-add_filter( 'rest_prepare_topicals', 'wpd_vendor', 10, 3 );
-add_filter( 'rest_prepare_growers', 'wpd_vendor', 10, 3 );
-
-/**
- * Add Shelf Type taxonomy for specific Custom Post Types
- *
- * @since 3.1
- */
-function wpd_rest_shelf_type( $data, $post, $request ) {
-	$_data                = $data->data;
-	$_data['shelf_types'] = get_the_term_list( $post->ID, 'shelf_type', '', ' ', '' );
-	$data->data           = $_data;
-	return $data;
-}
-add_filter( 'rest_prepare_flowers', 'wpd_rest_shelf_type', 10, 3 );
-add_filter( 'rest_prepare_concentrates', 'wpd_rest_shelf_type', 10, 3 );
-add_filter( 'rest_prepare_edibles', 'wpd_rest_shelf_type', 10, 3 );
-add_filter( 'rest_prepare_prerolls', 'wpd_rest_shelf_type', 10, 3 );
-add_filter( 'rest_prepare_growers', 'wpd_rest_shelf_type', 10, 3 );
-
-/**
- * Add Strain Type taxonomy for specific Custom Post Types
- *
- * @since 3.1
- */
-function wpd_rest_strain_type( $data, $post, $request ) {
-	$_data                 = $data->data;
-	$_data['strain_types'] = get_the_term_list( $post->ID, 'strain_type', '', ' ', '' );
-	$data->data            = $_data;
-	return $data;
-}
-add_filter( 'rest_prepare_flowers', 'wpd_rest_strain_type', 10, 3 );
-add_filter( 'rest_prepare_concentrates', 'wpd_rest_strain_type', 10, 3 );
-add_filter( 'rest_prepare_edibles', 'wpd_rest_strain_type', 10, 3 );
-add_filter( 'rest_prepare_prerolls', 'wpd_rest_strain_type', 10, 3 );
-add_filter( 'rest_prepare_growers', 'wpd_rest_strain_type', 10, 3 );

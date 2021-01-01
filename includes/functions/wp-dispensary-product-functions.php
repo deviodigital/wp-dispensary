@@ -16,7 +16,7 @@ if ( ! function_exists( 'is_product' ) ) {
 	 * @return bool
 	 */
 	function is_product() {
-		return is_singular( wpd_menu_types_simple( TRUE ) );
+		return is_singular( 'products' );
 	}
 }
 
@@ -94,8 +94,8 @@ function get_wpd_product_details( $product_id, $product_details, $wrapper ) {
 
 			// Seed count.
 			if ( 'show' === $value && 'seed_count' === $product ) {
-        if ( get_post_meta( $product_id, '_seedcount', true ) ) {
-            $str .= '<'  . $wrapper . ' class="wpd-productinfo seeds"><strong>' . esc_attr__( 'Seeds', 'wp-dispensary' ) . ':</strong> ' . get_post_meta( $product_id, '_seedcount', true ) . '</'  . $wrapper . '>';
+        if ( get_post_meta( $product_id, 'seed_count', true ) ) {
+            $str .= '<'  . $wrapper . ' class="wpd-productinfo seeds"><strong>' . esc_attr__( 'Seeds', 'wp-dispensary' ) . ':</strong> ' . get_post_meta( $product_id, 'seed_count', true ) . '</'  . $wrapper . '>';
 				} else {
 					// Do nothing.
 				}
@@ -105,8 +105,8 @@ function get_wpd_product_details( $product_id, $product_details, $wrapper ) {
 
 			// Clone count.
 			if ( 'show' === $value && 'clone_count' === $product ) {
-        if ( get_post_meta( $product_id, '_clonecount', true ) ) {
-            $str .= '<'  . $wrapper . ' class="wpd-productinfo clones"><strong>' . esc_attr__( 'Clones', 'wp-dispensary' ) . ':</strong> ' . get_post_meta( $product_id, '_clonecount', true ) . '</'  . $wrapper . '>';
+        if ( get_post_meta( $product_id, 'clone_count', true ) ) {
+            $str .= '<'  . $wrapper . ' class="wpd-productinfo clones"><strong>' . esc_attr__( 'Clones', 'wp-dispensary' ) . ':</strong> ' . get_post_meta( $product_id, 'clone_count', true ) . '</'  . $wrapper . '>';
 				} else {
 					// Do nothing.
 				}
@@ -114,71 +114,71 @@ function get_wpd_product_details( $product_id, $product_details, $wrapper ) {
           // Do nothing.
 			}
 
-			// Size oz (Topicals).
-			if ( 'show' === $value && 'size' === $product ) {
-        if ( get_post_meta( $product_id, '_sizetopical', true ) ) {
-            $str .= '<'  . $wrapper . ' class="wpd-productinfo size"><strong>' . esc_attr__( 'Size', 'wp-dispensary' ) . ':</strong> ' . get_post_meta( $product_id, '_sizetopical', true ) . 'oz</'  . $wrapper . '>';
-				} else {
-					// Do nothing.
-				}
+		// Size oz (Topicals).
+		if ( 'show' === $value && 'size' === $product ) {
+	        if ( get_post_meta( $product_id, '_sizetopical', true ) ) {
+		$str .= '<'  . $wrapper . ' class="wpd-productinfo size"><strong>' . esc_attr__( 'Size', 'wp-dispensary' ) . ':</strong> ' . get_post_meta( $product_id, '_sizetopical', true ) . 'oz</'  . $wrapper . '>';
 			} else {
+				// Do nothing.
+			}
+		} else {
+			// Do nothing.
+		}
+
+		// THC mg (Topicals).
+		if ( 'show' === $value && 'thc_topical' === $product ) {
+			if ( get_post_meta( $product_id, '_thctopical', true ) ) {
+				$str .= '<'  . $wrapper . ' class="wpd-productinfo thc"><strong>' . esc_attr__( 'THC', 'wp-dispensary' ) . ':</strong> ' . get_post_meta( $product_id, '_thctopical', true ) . 'mg</'  . $wrapper . '>';
+			} else {
+				// Do nothing.
+			}
+		} else {
           // Do nothing.
-			}
+		}
 
-			// THC mg (Topicals).
-			if ( 'show' === $value && 'thc_topical' === $product ) {
-        if ( get_post_meta( $product_id, '_thctopical', true ) ) {
-            $str .= '<'  . $wrapper . ' class="wpd-productinfo thc"><strong>' . esc_attr__( 'THC', 'wp-dispensary' ) . ':</strong> ' . get_post_meta( $product_id, '_thctopical', true ) . 'mg</'  . $wrapper . '>';
-				} else {
-					// Do nothing.
-				}
+	    // CBD mg (Topicals).
+		if ( 'show' === $value && 'cbd' === $product ) {
+			if ( get_post_meta( $product_id, '_cbdtopical', true ) ) {
+				$str .= '<'  . $wrapper . ' class="wpd-productinfo cbd"><strong>' . esc_attr__( 'CBD', 'wp-dispensary' ) . ':</strong> ' . get_post_meta( $product_id, '_cbdtopical', true ) . 'mg</'  . $wrapper . '>';
 			} else {
-          // Do nothing.
+				// Do nothing.
 			}
+		} else {
+			// Do nothing.
+		}
 
-      // CBD mg (Topicals).
-			if ( 'show' === $value && 'cbd' === $product ) {
-        if ( get_post_meta( $product_id, '_cbdtopical', true ) ) {
-            $str .= '<'  . $wrapper . ' class="wpd-productinfo cbd"><strong>' . esc_attr__( 'CBD', 'wp-dispensary' ) . ':</strong> ' . get_post_meta( $product_id, '_cbdtopical', true ) . 'mg</'  . $wrapper . '>';
-				} else {
-					// Do nothing.
-				}
+		// Pre-roll weight.
+		if ( 'show' === $value && 'weight' === $product ) {
+			if ( get_post_meta( $product_id, '_preroll_weight', true ) ) {
+				$str .= '<'  . $wrapper . ' class="wpd-productinfo weight"><strong>' . esc_attr__( 'Weight', 'wp-dispensary' ) . ':</strong> ' . get_post_meta( $product_id, '_preroll_weight', true ) . 'g</'  . $wrapper . '>';
 			} else {
-          // Do nothing.
+				// Do nothing.
 			}
-
-      // Pre-roll weight.
-			if ( 'show' === $value && 'weight' === $product ) {
-				if ( get_post_meta( $product_id, '_preroll_weight', true ) ) {
-					$str .= '<'  . $wrapper . ' class="wpd-productinfo weight"><strong>' . esc_attr__( 'Weight', 'wp-dispensary' ) . ':</strong> ' . get_post_meta( $product_id, '_preroll_weight', true ) . 'g</'  . $wrapper . '>';
-				} else {
-					// Do nothing.
-				}
-			} else {
-        // Do nothing.
-			}
-
-		  // THC mg (Edibles).
-			if ( 'show' === $value && 'thcmg' === $product ) {
-        if ( get_post_meta( $product_id, '_thcmg', true ) ) {
-            $str .= '<'  . $wrapper . ' class="wpd-productinfo thc"><strong>' . esc_attr__( 'THC', 'wp-dispensary' ) . ':</strong> ' . get_post_meta( $product_id, '_thcmg', true ) . 'mg</'  . $wrapper . '>';
-				} else {
-					// Do nothing.
-				}
-			} else {
+		} else {
 	        // Do nothing.
+		}
+
+		// THC mg (Edibles).
+		if ( 'show' === $value && 'thcmg' === $product ) {
+	        if ( get_post_meta( $product_id, '_thcmg', true ) ) {
+				$str .= '<'  . $wrapper . ' class="wpd-productinfo thc"><strong>' . esc_attr__( 'THC', 'wp-dispensary' ) . ':</strong> ' . get_post_meta( $product_id, '_thcmg', true ) . 'mg</'  . $wrapper . '>';
+			} else {
+				// Do nothing.
 			}
+		} else {
+			// Do nothing.
+		}
 
 	    // Servings (Edibles).
-			if ( 'show' === $value && 'servings' === $product ) {
+		if ( 'show' === $value && 'servings' === $product ) {
 	      if ( get_post_meta( $product_id, '_thccbdservings', true ) ) {
 	          $str .= '<'  . $wrapper . ' class="wpd-productinfo servings"><strong>' . esc_attr__( 'Servings', 'wp-dispensary' ) . ':</strong> ' . get_post_meta( $product_id, '_thccbdservings', true ) . '</'  . $wrapper . '>';
-				} else {
-					// Do nothing.
-				}
 			} else {
-	        // Do nothing.
+				// Do nothing.
 			}
+		} else {
+			// Do nothing.
+		}
 
     }
 
@@ -225,7 +225,7 @@ function get_wpd_product_image( $product_id = NULL, $image_size ) {
         $img_size = $image_size;
     }
 
-		$thumbnail_id        = get_post_thumbnail_id( $prod_id );
+	$thumbnail_id        = get_post_thumbnail_id( $prod_id );
     $thumbnail_url_array = wp_get_attachment_image_src( $thumbnail_id, $img_size, false );
     $thumbnail_url       = $thumbnail_url_array[0];
 

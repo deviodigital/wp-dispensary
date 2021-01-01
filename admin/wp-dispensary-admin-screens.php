@@ -26,7 +26,11 @@ function wp_dispensary_columns( $columns ) {
 }
 add_filter( 'wpd_manage_posts_custom_column', 'wp_dispensary_columns' );
 
-/** Adds the featured image to the column */
+/**
+ * Adds the featured image to the column
+ * 
+ * @return void
+ */
 function wp_dispensary_columns_data( $column ) {
 	switch ( $column ) {
 		case 'featured_thumb':
@@ -37,21 +41,21 @@ function wp_dispensary_columns_data( $column ) {
 	}
 }
 
-// Add thumbnails to post_type screen for WPD menu types.
+/**
+ * Add thumbnails to post_type screen for WPD menu types.
+ * 
+ * @return void
+ */
 if ( isset( $_GET['post_type'] ) ) {
-	$post_type        = esc_html( $_GET['post_type'] );
-	$menu_types       = wpd_menu_types();
-	$menu_types_names = array();
+	// Get post type.
+	$post_type = esc_html( $_GET['post_type'] );
+	// Get post types.
+	$post_types = wpd_menu_types_simple( true );
+	// Add products to post types array.
+	$post_types[] = 'products';
 
-	// Loop through menu types.
-	foreach ( $menu_types as $key=>$value ) {
-		// Strip wpd- from the menu type name.
-		$name = str_replace( 'wpd-', '', $key );
-		// Add menu type name to new array.
-		$menu_types_simple[] = $name;
-	}
-
-	if ( in_array( $post_type, apply_filters( 'wpd_admin_screen_thumbnails', $menu_types_simple ) ) ) {
+	// Add actions and filters if post type is a WPD Menu type.
+	if ( in_array( $post_type, apply_filters( 'wpd_admin_screen_thumbnails', $post_types ) ) ) {
 		add_filter( 'manage_posts_columns', 'wp_dispensary_columns' );
 		add_action( 'manage_posts_custom_column', 'wp_dispensary_columns_data', 10, 1 );
 		add_filter( 'manage_pages_columns', 'wp_dispensary_columns' );
@@ -59,7 +63,11 @@ if ( isset( $_GET['post_type'] ) ) {
 	}
 }
 
-// Hide specific metaboxes by default.
+/**
+ * Hide specific metaboxes by default.
+ * 
+ * @return void
+ */
 function hide_meta_box( $hidden, $screen ) {
 	//make sure we are dealing with the correct screen.
 	if ( ( 'post' == $screen->base ) && ( 'flowers' == $screen->id ) ) {
@@ -171,10 +179,15 @@ function wpd_remove_taxonomies_from_admin_columns( $columns ) {
     // remove ingredients taxonomy column.
     unset( $columns['taxonomy-ingredients'] );
     // remove allergens taxonomy column.
-    unset( $columns['taxonomy-allergens'] );
+	unset( $columns['taxonomy-allergens'] );
+	
+	/**
+	 * @todo add the old category taxonomies to unset list.
+	 */
 
 	return $columns;
 }
+add_filter( 'manage_edit-products_columns', 'wpd_remove_taxonomies_from_admin_columns' );
 add_filter( 'manage_edit-flowers_columns', 'wpd_remove_taxonomies_from_admin_columns' );
 add_filter( 'manage_edit-concentrates_columns', 'wpd_remove_taxonomies_from_admin_columns' );
 add_filter( 'manage_edit-edibles_columns', 'wpd_remove_taxonomies_from_admin_columns' );

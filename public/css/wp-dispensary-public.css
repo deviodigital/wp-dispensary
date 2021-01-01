@@ -614,3 +614,15 @@ table.wpdispensary-table.single.details.compound-details td {
 	}
 
 }
+
+/** Widget - Product Search */
+
+.wp-dispensary-product-search form {
+    display: flex;
+    flex-direction: row;
+}
+
+.wp-dispensary-product-search form input[type="text"],
+.wp-dispensary-product-search form input[type="submit"] {
+    border-radius: 0;
+}

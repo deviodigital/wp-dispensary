@@ -12,7 +12,7 @@
 
 ## 3.3.3
 *   Added shelf and strain type to Edibles REST API endpoint in `admin/wp-dispensary-rest-api.php`
-*   Added file to store the code for 6 upcoming depreciated shortcodes in `admin/depreciated-shortcodes.php`
+*   Added file to store the code for 6 upcoming deprecated shortcodes in `admin/deprecated-shortcodes.php`
 *   Updated codes used for flower prices in prices table output in `admin/wp-dispensary-data-output.php`
 *   Updated admin settings logo file to use the new WP Dispensary logo in `admin/images/wpd-logo.png`
 *   Updated `.pot` file with text strings for localization in `languages/wp-dispensary.pot`
@@ -322,7 +322,7 @@
 *   Added CBG to list of compound details in `admin/wp-dispensary-rest-api.php`
 *   Added vendor taxonomy to flush rewrite rules on plugin activation in `includes/wp-dispensary-activator.php`
 *   Fixed various debug errors for undefined variables in `admin/wp-dispensary-shortcodes.php`
-*   Fixed depreciated string value in get_bloginfo function in `admin/wp-dispensary-shortcodes.php`
+*   Fixed deprecated string value in get_bloginfo function in `admin/wp-dispensary-shortcodes.php`
 *   Fixed bug in CBA variable names in `admin/wp-dispensary-shortcodes.php`
 *   Fixed bug in Concentrates widget form category default `admin/post-types/wp-dispensary-widgets.php`
 *   Rebuilt the admin Settings for WP Dispensary in `admin/wp-dispensary-admin-settings.php`

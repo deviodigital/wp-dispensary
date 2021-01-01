@@ -24,7 +24,7 @@
  * @since      1.0.0
  * @package    WP_Dispensary
  * @subpackage WP_Dispensary/includes
- * @author     Robert DeVore <deviodigital@gmail.com>
+ * @author     WP Dispensary <contact@wpdispensary.com>
  */
 class WP_Dispensary {
 
@@ -129,12 +129,20 @@ class WP_Dispensary {
 		/**
 		 * Adding in custom functions that are used throughout the rest of the plugin
 		 *
-		 * @since    2.0.0 - last updated in version 3.0
+		 * @since    2.0.0 - last updated in version 3.4
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wp-dispensary-functions.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/functions/wp-dispensary-helper-functions.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/functions/wp-dispensary-settings-functions.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/functions/wp-dispensary-pricing-functions.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/functions/wp-dispensary-product-functions.php';
+
+		/**
+		 * The functions responsible for updating WP Dispensary data during plugin upgrades
+		 * 
+		 * @since 4.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wp-dispensary-plugin-upgrade.php';
 
 		/**
 		 * The functions responsible for building the custom post types
@@ -143,12 +151,7 @@ class WP_Dispensary {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/post-types/wp-dispensary-taxonomies.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/post-types/wp-dispensary-metaboxes.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/post-types/wp-dispensary-flowers.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/post-types/wp-dispensary-concentrates.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/post-types/wp-dispensary-edibles.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/post-types/wp-dispensary-prerolls.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/post-types/wp-dispensary-topicals.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/post-types/wp-dispensary-growers.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/post-types/wp-dispensary-products-post-type.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/post-types/wp-dispensary-widgets.php';
 
 		/**
@@ -159,11 +162,11 @@ class WP_Dispensary {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wp-dispensary-rest-api.php';
 
 		/**
-		 * Adding depreciated shortcodes
+		 * Adding deprecated shortcodes
 		 *
 		 * @since    3.3.3
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/depreciated-shortcodes.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/deprecated-shortcodes.php';
 
 		/**
 		 * Adding shortcode generation

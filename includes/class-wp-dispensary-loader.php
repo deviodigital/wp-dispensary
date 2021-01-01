@@ -18,7 +18,7 @@
  *
  * @package    WP_Dispensary
  * @subpackage WP_Dispensary/includes
- * @author     Robert DeVore <deviodigital@gmail.com>
+ * @author     WP Dispensary <contact@wpdispensary.com>
  */
 class WP_Dispensary_Loader {
 

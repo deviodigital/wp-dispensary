@@ -292,20 +292,20 @@ function get_wpd_compounds_simple( $product_id, $type = NULL, $compound_array = 
 	}
 
 	// Get post type.
-	$post_type = get_post_type( $product_id );
+	$product_type = get_post_meta( $product_id, 'product_type', true );
 
     // Create post type variables.
-    if ( $post_type ) {
-        $post_type_data = get_post_type_object( $post_type );
-        $post_type_name = $post_type_data->label;
-        $post_type_slug = $post_type_data->rewrite['slug'];
+    if ( $product_type ) {
+        $product_type_data = get_post_type_object( $product_type );
+        $product_type_name = $product_type_data->label;
+        $product_type_slug = $product_type_data->rewrite['slug'];
 	}
 
-	if ( 'flowers' == $post_type || 'concentrates' == $post_type || 'prerolls' == $post_type || 'tinctures' == $post_type ) {
+	if ( 'flowers' == $product_type || 'concentrates' == $product_type || 'prerolls' == $product_type || 'tinctures' == $product_type ) {
 		$type = '%';
 	}
 
-	if ( 'edibles' == $post_type || 'topicals' == $post_type ) {
+	if ( 'edibles' == $product_type || 'topicals' == $product_type ) {
 		$type = 'mg';
 	}
 
@@ -314,8 +314,8 @@ function get_wpd_compounds_simple( $product_id, $type = NULL, $compound_array = 
 
 	// THC.
 	if ( NULL != $compound_array && in_array( 'thc', $compound_array ) ) {
-		if ( get_post_meta( $product_id, '_thc', true ) ) {
-			$compounds['THC'] = get_post_meta( $product_id, '_thc', true ) . $type;
+		if ( get_post_meta( $product_id, 'compound_thc', true ) ) {
+			$compounds['THC'] = get_post_meta( $product_id, 'compound_thc', true ) . $type;
 		} else {
 			// Do nothing.
 		}
@@ -325,8 +325,8 @@ function get_wpd_compounds_simple( $product_id, $type = NULL, $compound_array = 
 
 	// THCA.
 	if ( NULL != $compound_array && in_array( 'thca', $compound_array ) ) {
-		if ( get_post_meta( $product_id, '_thca', true ) ) {
-			$compounds['THCA'] = get_post_meta( $product_id, '_thca', true ) . $type;
+		if ( get_post_meta( $product_id, 'compound_thca', true ) ) {
+			$compounds['THCA'] = get_post_meta( $product_id, 'compound_thca', true ) . $type;
 		}
 	} else {
 		// Do nothing.
@@ -334,8 +334,8 @@ function get_wpd_compounds_simple( $product_id, $type = NULL, $compound_array = 
 
 	// CBD.
 	if ( NULL != $compound_array && in_array( 'cbd', $compound_array ) ) {
-		if ( get_post_meta( $product_id, '_cbd', true ) ) {
-			$compounds['CBD'] = get_post_meta( $product_id, '_cbd', true ) . $type;
+		if ( get_post_meta( $product_id, 'compound_cbd', true ) ) {
+			$compounds['CBD'] = get_post_meta( $product_id, 'compound_cbd', true ) . $type;
 		} else {
 			// Do nothing.
 		}
@@ -345,8 +345,8 @@ function get_wpd_compounds_simple( $product_id, $type = NULL, $compound_array = 
 
 	// CBA.
 	if ( NULL != $compound_array && in_array( 'cba', $compound_array ) ) {
-		if ( get_post_meta( $product_id, '_cba', true ) ) {
-			$compounds['CBA'] = get_post_meta( $product_id, '_cba', true ) . $type;
+		if ( get_post_meta( $product_id, 'compound_cba', true ) ) {
+			$compounds['CBA'] = get_post_meta( $product_id, 'compound_cba', true ) . $type;
 		} else {
 			// Do nothing.
 		}
@@ -356,8 +356,8 @@ function get_wpd_compounds_simple( $product_id, $type = NULL, $compound_array = 
 
 	// CBN.
 	if ( NULL != $compound_array && in_array( 'cbn', $compound_array ) ) {
-		if ( get_post_meta( $product_id, '_cbn', true ) ) {
-			$compounds['CBN'] = get_post_meta( $product_id, '_cbn', true ) . $type;
+		if ( get_post_meta( $product_id, 'compound_cbn', true ) ) {
+			$compounds['CBN'] = get_post_meta( $product_id, 'compound_cbn', true ) . $type;
 		} else {
 			// Do nothing.
 		}
@@ -367,8 +367,8 @@ function get_wpd_compounds_simple( $product_id, $type = NULL, $compound_array = 
 
 	// CBG.
 	if ( NULL != $compound_array && in_array( 'cbg', $compound_array ) ) {
-		if ( get_post_meta( $product_id, '_cbg', true ) ) {
-			$compounds['CBG'] = get_post_meta( $product_id, '_cbg', true ) . $type;
+		if ( get_post_meta( $product_id, 'compound_cbg', true ) ) {
+			$compounds['CBG'] = get_post_meta( $product_id, 'compound_cbg', true ) . $type;
 		} else {
 			// Do nothing.
 		}
@@ -415,20 +415,13 @@ function get_wpd_compounds_array( $product_id, $type = NULL, $compound_array = N
 	}
 
 	// Get post type.
-	$post_type = get_post_type();
+	$product_type = get_post_meta( $product_id, 'product_type', true );
 
-  // Create post type variables.
-  if ( $post_type ) {
-    $post_type_data = get_post_type_object( $post_type );
-    $post_type_name = $post_type_data->label;
-    $post_type_slug = $post_type_data->rewrite['slug'];
-	}
-
-	if ( 'flowers' == $post_type || 'concentrates' == $post_type || 'prerolls' == $post_type || 'tinctures' == $post_type ) {
+	if ( 'flowers' == $product_type || 'concentrates' == $product_type || 'prerolls' == $product_type || 'tinctures' == $product_type ) {
 		$type = '%';
 	}
 
-	if ( 'edibles' == $post_type || 'topicals' == $post_type ) {
+	if ( 'edibles' == $product_type || 'topicals' == $product_type ) {
 		$type = 'mg';
 	}
 
@@ -437,8 +430,8 @@ function get_wpd_compounds_array( $product_id, $type = NULL, $compound_array = N
 
 	// THC.
 	if ( in_array( 'thc', $compound_array ) ) {
-		if ( get_post_meta( $product_id, '_thc', true ) ) {
-			$compounds['THC'] = get_post_meta( $product_id, '_thc', true ) . $type;
+		if ( get_post_meta( $product_id, 'compound_thc', true ) ) {
+			$compounds['THC'] = get_post_meta( $product_id, 'compound_thc', true ) . $type;
 		} else {
 			// Do nothing.
 		}
@@ -448,8 +441,8 @@ function get_wpd_compounds_array( $product_id, $type = NULL, $compound_array = N
 
 	// THCA.
 	if ( in_array( 'thca', $compound_array ) ) {
-		if ( get_post_meta( $product_id, '_thca', true ) ) {
-			$compounds['THCA'] = get_post_meta( $product_id, '_thca', true ) . $type;
+		if ( get_post_meta( $product_id, 'compound_thca', true ) ) {
+			$compounds['THCA'] = get_post_meta( $product_id, 'compound_thca', true ) . $type;
 		}
 	} else {
 		// Do nothing.
@@ -457,8 +450,8 @@ function get_wpd_compounds_array( $product_id, $type = NULL, $compound_array = N
 
 	// CBD.
 	if ( in_array( 'cbd', $compound_array ) ) {
-		if ( get_post_meta( $product_id, '_cbd', true ) ) {
-			$compounds['CBD'] = get_post_meta( $product_id, '_cbd', true ) . $type;
+		if ( get_post_meta( $product_id, 'compound_cbd', true ) ) {
+			$compounds['CBD'] = get_post_meta( $product_id, 'compound_cbd', true ) . $type;
 		} else {
 			// Do nothing.
 		}
@@ -468,8 +461,8 @@ function get_wpd_compounds_array( $product_id, $type = NULL, $compound_array = N
 
 	// CBA.
 	if ( in_array( 'cba', $compound_array ) ) {
-		if ( get_post_meta( $product_id, '_cba', true ) ) {
-			$compounds['CBA'] = get_post_meta( $product_id, '_cba', true ) . $type;
+		if ( get_post_meta( $product_id, 'compound_cba', true ) ) {
+			$compounds['CBA'] = get_post_meta( $product_id, 'compound_cba', true ) . $type;
 		} else {
 			// Do nothing.
 		}
@@ -479,8 +472,8 @@ function get_wpd_compounds_array( $product_id, $type = NULL, $compound_array = N
 
 	// CBN.
 	if ( in_array( 'cbn', $compound_array ) ) {
-		if ( get_post_meta( $product_id, '_cbn', true ) ) {
-			$compounds['CBN'] = get_post_meta( $product_id, '_cbn', true ) . $type;
+		if ( get_post_meta( $product_id, 'compound_cbn', true ) ) {
+			$compounds['CBN'] = get_post_meta( $product_id, 'compound_cbn', true ) . $type;
 		} else {
 			// Do nothing.
 		}
@@ -490,8 +483,8 @@ function get_wpd_compounds_array( $product_id, $type = NULL, $compound_array = N
 
 	// CBG.
 	if ( in_array( 'cbg', $compound_array ) ) {
-		if ( get_post_meta( $product_id, '_cbg', true ) ) {
-			$compounds['CBG'] = get_post_meta( $product_id, '_cbg', true ) . $type;
+		if ( get_post_meta( $product_id, 'compound_cbg', true ) ) {
+			$compounds['CBG'] = get_post_meta( $product_id, 'compound_cbg', true ) . $type;
 		} else {
 			// Do nothing.
 		}
@@ -512,17 +505,46 @@ function wpd_menu_types() {
 	$menu_types = array(
 		'wpd-flowers'      => __( 'Flowers', 'wp-dispensary' ),
 		'wpd-concentrates' => __( 'Concentrates', 'wp-dispensary' ),
+		'wpd-tinctures'    => __( 'Tinctures', 'wp-dispensary' ),
 		'wpd-edibles'      => __( 'Edibles', 'wp-dispensary' ),
 		'wpd-prerolls'     => __( 'Pre-rolls', 'wp-dispensary' ),
 		'wpd-topicals'     => __( 'Topicals', 'wp-dispensary' ),
 		'wpd-growers'      => __( 'Growers', 'wp-dispensary' ),
+		'wpd-gear'         => __( 'Gear', 'wp-dispensary' ),
 	);
 	return apply_filters( 'wpd_menu_types', $menu_types );
 }
 
 /**
+ * Get menu type display name
+ *
+ * @since 4.0
+ * @param string $slug
+ * @return string
+ */
+function wpd_product_type_display_name( $slug = '' ) {
+	if ( ! $slug ) {
+		return null;
+	}
+	$product_types = array(
+		'flowers'      => __( 'Flowers', 'wp-dispensary' ),
+		'concentrates' => __( 'Concentrates', 'wp-dispensary' ),
+		'tinctures'    => __( 'Tinctures', 'wp-dispensary' ),
+		'edibles'      => __( 'Edibles', 'wp-dispensary' ),
+		'prerolls'     => __( 'Pre-rolls', 'wp-dispensary' ),
+		'topicals'     => __( 'Topicals', 'wp-dispensary' ),
+		'growers'      => __( 'Growers', 'wp-dispensary' ),
+		'gear'         => __( 'Gear', 'wp-dispensary' ),
+	);
+	return apply_filters( 'wpd_product_type_display_name', $product_types[$slug] );
+}
+
+/**
  * Get all menu types - Simple
  *
+ * @todo update this function to have $lowercase = true, and pass a second arg ($implode) set to false
+ * by default. I can use the code found elsewhere in the theme to include this option.
+ * 
  * @since 2.5
  * @return array
  */
@@ -558,95 +580,20 @@ function wpd_product_updated_messages( $messages ) {
 	// Product ID.
 	$product_id = $post->ID;
 
-  if ( 'flowers' === get_post_type() ) {
+  if ( 'products' === get_post_meta( $product_id, 'product_type', true ) ) {
       $messages['post'] = array(
           0 => '', // Unused. Messages start at index 1.
-          1 => sprintf( __( 'Flower updated. <a href="%s">View flower</a>' ), esc_url( get_permalink( $product_id ) ) ),
-          2 => __( 'Flower updated.', 'wp-dispensary' ),
-          3 => __( 'Flower deleted.', 'wp-dispensary' ),
-          4 => __( 'Flower updated.', 'wp-dispensary' ),
-          5 => isset( $_GET['revision'] ) ? sprintf( __( 'Flower restored to revision from %s' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-          6 => sprintf( __( 'Flower published. <a href="%s">View flower</a>' ), esc_url( get_permalink( $product_id ) ) ),
-          7 => __( 'Flower saved.', 'wp-dispensary' ),
-          8 => sprintf( __( 'Flower submitted. <a target="_blank" href="%s">Preview flower</a>' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $product_id ) ) ) ),
-          9 => sprintf( __( 'Flower scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview flower</a>' ),
+          1 => sprintf( __( 'Product updated. <a href="%s">View product</a>' ), esc_url( get_permalink( $product_id ) ) ),
+          2 => __( 'Product updated.', 'wp-dispensary' ),
+          3 => __( 'Product deleted.', 'wp-dispensary' ),
+          4 => __( 'Product updated.', 'wp-dispensary' ),
+          5 => isset( $_GET['revision'] ) ? sprintf( __( 'Product restored to revision from %s' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+          6 => sprintf( __( 'Product published. <a href="%s">View product</a>' ), esc_url( get_permalink( $product_id ) ) ),
+          7 => __( 'Product saved.', 'wp-dispensary' ),
+          8 => sprintf( __( 'Product submitted. <a target="_blank" href="%s">Preview product</a>' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $product_id ) ) ) ),
+          9 => sprintf( __( 'Product scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview product</a>' ),
           date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $product_id ) ) ),
-          10 => sprintf( __( 'Flower draft updated. <a target="_blank" href="%s">Preview flower</a>' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $product_id ) ) ) ),
-      );
-  } elseif ( 'concentrates' === get_post_type() ) {
-      $messages['post'] = array(
-          0 => '', // Unused. Messages start at index 1.
-          1 => sprintf( __( 'Concentrate updated. <a href="%s">View concentrate</a>' ), esc_url( get_permalink( $product_id ) ) ),
-          2 => __( 'Concentrate updated.', 'wp-dispensary' ),
-          3 => __( 'Concentrate deleted.', 'wp-dispensary' ),
-          4 => __( 'Concentrate updated.', 'wp-dispensary' ),
-          5 => isset( $_GET['revision'] ) ? sprintf( __( 'Concentrate restored to revision from %s' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-          6 => sprintf( __( 'Concentrate published. <a href="%s">View concentrate</a>' ), esc_url( get_permalink( $product_id ) ) ),
-          7 => __( 'Concentrate saved.', 'wp-dispensary' ),
-          8 => sprintf( __( 'Concentrate submitted. <a target="_blank" href="%s">Preview concentrate</a>' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $product_id ) ) ) ),
-          9 => sprintf( __( 'Concentrate scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview concentrate</a>' ),
-          date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $product_id ) ) ),
-          10 => sprintf( __( 'Concentrate draft updated. <a target="_blank" href="%s">Preview concentrate</a>' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $product_id ) ) ) ),
-      );
-  } elseif ( 'edibles' === get_post_type() ) {
-      $messages['post'] = array(
-          0 => '', // Unused. Messages start at index 1.
-          1 => sprintf( __( 'Edible updated. <a href="%s">View edible</a>' ), esc_url( get_permalink( $product_id ) ) ),
-          2 => __( 'Edible updated.', 'wp-dispensary' ),
-          3 => __( 'Edible deleted.', 'wp-dispensary' ),
-          4 => __( 'Edible updated.', 'wp-dispensary' ),
-          5 => isset( $_GET['revision'] ) ? sprintf( __( 'Edible restored to revision from %s' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-          6 => sprintf( __( 'Edible published. <a href="%s">View edible</a>' ), esc_url( get_permalink( $product_id ) ) ),
-          7 => __( 'Edible saved.', 'wp-dispensary' ),
-          8 => sprintf( __( 'Edible submitted. <a target="_blank" href="%s">Preview edible</a>' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $product_id ) ) ) ),
-          9 => sprintf( __( 'Edible scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview edible</a>' ),
-          date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $product_id ) ) ),
-          10 => sprintf( __( 'Edible draft updated. <a target="_blank" href="%s">Preview edible</a>' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $product_id ) ) ) ),
-      );
-  } elseif ( 'prerolls' === get_post_type() ) {
-      $messages['post'] = array(
-          0 => '', // Unused. Messages start at index 1.
-          1 => sprintf( __( 'Pre-roll updated. <a href="%s">View pre-roll</a>' ), esc_url( get_permalink( $product_id ) ) ),
-          2 => __( 'Pre-roll updated.', 'wp-dispensary' ),
-          3 => __( 'Pre-roll deleted.', 'wp-dispensary' ),
-          4 => __( 'Pre-roll updated.', 'wp-dispensary' ),
-          5 => isset( $_GET['revision'] ) ? sprintf( __( 'Pre-roll restored to revision from %s' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-          6 => sprintf( __( 'Pre-roll published. <a href="%s">View pre-roll</a>' ), esc_url( get_permalink( $product_id ) ) ),
-          7 => __( 'Pre-roll saved.', 'wp-dispensary' ),
-          8 => sprintf( __( 'Pre-roll submitted. <a target="_blank" href="%s">Preview pre-roll</a>' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $product_id ) ) ) ),
-          9 => sprintf( __( 'Pre-roll scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview pre-roll</a>' ),
-          date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $product_id ) ) ),
-          10 => sprintf( __( 'Pre-roll draft updated. <a target="_blank" href="%s">Preview pre-roll</a>' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $product_id ) ) ) ),
-      );
-  } elseif ( 'topicals' === get_post_type() ) {
-      $messages['post'] = array(
-          0 => '', // Unused. Messages start at index 1.
-          1 => sprintf( __( 'Topical updated. <a href="%s">View topical</a>' ), esc_url( get_permalink( $product_id ) ) ),
-          2 => __( 'Topical updated.', 'wp-dispensary' ),
-          3 => __( 'Topical deleted.', 'wp-dispensary' ),
-          4 => __( 'Topical updated.', 'wp-dispensary' ),
-          5 => isset( $_GET['revision'] ) ? sprintf( __( 'Topical restored to revision from %s' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-          6 => sprintf( __( 'Topical published. <a href="%s">View topical</a>' ), esc_url( get_permalink( $product_id ) ) ),
-          7 => __( 'Topical saved.', 'wp-dispensary' ),
-          8 => sprintf( __( 'Topical submitted. <a target="_blank" href="%s">Preview topical</a>' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $product_id ) ) ) ),
-          9 => sprintf( __( 'Topical scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview topical</a>' ),
-          date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $product_id ) ) ),
-          10 => sprintf( __( 'Topical draft updated. <a target="_blank" href="%s">Preview topical</a>' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $product_id ) ) ) ),
-      );
-  } elseif ( 'growers' === get_post_type() ) {
-      $messages['post'] = array(
-          0 => '', // Unused. Messages start at index 1.
-          1 => sprintf( __( 'Item updated. <a href="%s">View item</a>' ), esc_url( get_permalink( $product_id ) ) ),
-          2 => __( 'Item updated.', 'wp-dispensary' ),
-          3 => __( 'Item deleted.', 'wp-dispensary' ),
-          4 => __( 'Item updated.', 'wp-dispensary' ),
-          5 => isset( $_GET['revision'] ) ? sprintf( __( 'Item restored to revision from %s' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-          6 => sprintf( __( 'Item published. <a href="%s">View item</a>' ), esc_url( get_permalink( $product_id ) ) ),
-          7 => __( 'Item saved.', 'wp-dispensary' ),
-          8 => sprintf( __( 'Item submitted. <a target="_blank" href="%s">Preview item</a>' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $product_id ) ) ) ),
-          9 => sprintf( __( 'Item scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview item</a>' ),
-          date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $product_id ) ) ),
-          10 => sprintf( __( 'Item draft updated. <a target="_blank" href="%s">Preview item</a>' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $product_id ) ) ) ),
+          10 => sprintf( __( 'Product draft updated. <a target="_blank" href="%s">Preview product</a>' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $product_id ) ) ) ),
       );
   } else {
 		// Do nothing.
@@ -663,13 +610,13 @@ add_filter( 'post_updated_messages', 'wpd_product_updated_messages' );
  */
 function wpd_flowers_weights_array() {
 	$flowers_weights = array(
-		'1 g'    => '_gram',
-		'2 g'    => '_twograms',
-		'1/8 oz' => '_eighth',
-		'5 g'    => '_fivegrams',
-		'1/4 oz' => '_quarter',
-		'1/2 oz' => '_halfounce',
-		'1 oz'   => '_ounce',
+		'1 g'    => 'price_gram',
+		'2 g'    => 'price_two_grams',
+		'1/8 oz' => 'price_eighth',
+		'5 g'    => 'price_five_grams',
+		'1/4 oz' => 'price_quarter_ounce',
+		'1/2 oz' => 'price_half_ounce',
+		'1 oz'   => 'price_ounce',
 	);
 	return apply_filters( 'wpd_flowers_weights_array', $flowers_weights );
 }
@@ -682,9 +629,9 @@ function wpd_flowers_weights_array() {
  */
 function wpd_concentrates_weights_array() {
 	$concentrates_weights = array(
-		'1/2 g' => '_halfgram',
-		'1 g'   => '_gram',
-		'2 g'   => '_twograms',
+		'1/2 g' => 'price_half_gram',
+		'1 g'   => 'price_gram',
+		'2 g'   => 'price_two_grams',
 	);
 	return apply_filters( 'wpd_concentrates_weights_array', $concentrates_weights );
 }

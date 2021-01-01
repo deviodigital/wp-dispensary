@@ -729,108 +729,45 @@ if ( ! class_exists( 'WPD_ADMIN_SETTINGS' ) ) :
 	} // WPD_ADMIN_SETTINGS ended.
 endif;
 
-// Adds Flowers admin submenu link.
-function wpd_admin_menu_flowers(  ) {
-	// Get permalink base for Flowers.
-	$wpd_flowers_slug = get_option( 'wpd_flowers_slug' );
+// Adds Products admin submenu link.
+function wpd_admin_menu_products(  ) {
+	// Get permalink base for Products.
+	$wpd_products_slug = get_option( 'wpd_products_slug' );
 
 	// If custom base is empty, set default.
-	if ( '' == $wpd_flowers_slug ) {
-		$wpd_flowers_slug = 'flowers';
+	if ( '' == $wpd_products_slug ) {
+		$wpd_products_slug = 'products';
 	}
 
 	// Capitalize first letter of new slug.
-	$wpd_flowers_slug_cap = ucfirst( $wpd_flowers_slug );
+	$wpd_products_slug_cap = ucfirst( $wpd_products_slug );
 
-	add_submenu_page( 'wpd-settings', $wpd_flowers_slug_cap, $wpd_flowers_slug_cap, 'manage_options', 'edit.php?post_type=flowers', null );
+	add_submenu_page( 'wpd-settings', $wpd_products_slug_cap, $wpd_products_slug_cap, 'manage_options', 'edit.php?post_type=products', null );
 }
-add_action( 'admin_menu', 'wpd_admin_menu_flowers', 1 );
+add_action( 'admin_menu', 'wpd_admin_menu_products', 1 );
 
-// Adds Concentrates admin submenu link.
-function wpd_admin_menu_concentrates( ) {
-	// Get permalink base for Concentrates.
-	$wpd_concentrates_slug = get_option( 'wpd_concentrates_slug' );
+// Adds Categories admin submenu link.
+function wpd_admin_menu_categories() {
+	add_submenu_page( 'wpd-settings', 'Categories', 'Categories', 'manage_options', 'edit-tags.php?taxonomy=wpd_categories', null );
+}
+add_action( 'admin_menu', 'wpd_admin_menu_categories', 2 );
 
-	// If custom base is empty, set default.
-	if ( '' == $wpd_concentrates_slug ) {
-		$wpd_concentrates_slug = 'concentrates';
+// Adds Vendors admin submenu link.
+function wpd_admin_menu_vendors() {
+	add_submenu_page( 'wpd-settings', 'Vendors', 'Vendors', 'manage_options', 'edit-tags.php?taxonomy=vendor', null );
+}
+add_action( 'admin_menu', 'wpd_admin_menu_vendors', 6 );
+
+// Keeps the WP Dispensary link list open when taxonomy submenu items are open.
+function wpd_keep_taxonomy_menu_open( $parent_file ) {
+	global $current_screen;
+	// Get current screen taxonomy.
+	$taxonomy = $current_screen->taxonomy;
+	// Check taxonomies.
+	if ( 'vendor' == $taxonomy || 'wpd_categories' == $taxonomy || 'shelf_type' == $taxonomy || 'strain_type' == $taxonomy ) {
+		$parent_file = 'wpd-settings';
 	}
 
-	// Capitalize first letter of new slug.
-	$wpd_concentrates_slug_cap = ucfirst( $wpd_concentrates_slug );
-
-	add_submenu_page( 'wpd-settings', $wpd_concentrates_slug_cap, $wpd_concentrates_slug_cap, 'manage_options', 'edit.php?post_type=concentrates', null );
+	return $parent_file;
 }
-add_action( 'admin_menu', 'wpd_admin_menu_concentrates', 2 );
-
-// Adds Edibles admin submenu link.
-function wpd_admin_menu_edibles( ) {
-	// Get permalink base for Edibles.
-	$wpd_edibles_slug = get_option( 'wpd_edibles_slug' );
-
-	// If custom base is empty, set default.
-	if ( '' == $wpd_edibles_slug ) {
-		$wpd_edibles_slug = 'edibles';
-	}
-
-	// Capitalize first letter of new slug.
-	$wpd_edibles_slug_cap = ucfirst( $wpd_edibles_slug );
-
-	add_submenu_page( 'wpd-settings', $wpd_edibles_slug_cap, $wpd_edibles_slug_cap, 'manage_options', 'edit.php?post_type=edibles', null );
-}
-add_action( 'admin_menu', 'wpd_admin_menu_edibles', 4 );
-
-// Adds Pre-rolls admin submenu link.
-function wpd_admin_menu_prerolls( ) {
-	// Get permalink base for Pre-rolls.
-	$wpd_prerolls_slug = get_option( 'wpd_prerolls_slug' );
-
-	// If custom base is empty, set default.
-	if ( '' == $wpd_prerolls_slug ) {
-		$wpd_prerolls_slug = 'prerolls';
-	}
-
-	$wpd_prerolls_slug_cap = ucfirst( $wpd_prerolls_slug );
-
-	// Capitalize first letter of new slug.
-	if ( 'prerolls' == $wpd_prerolls_slug ) {
-		$wpd_prerolls_slug_cap = 'Pre-rolls';
-	}
-
-	add_submenu_page( 'wpd-settings', $wpd_prerolls_slug_cap, $wpd_prerolls_slug_cap, 'manage_options', 'edit.php?post_type=prerolls', null );
-}
-add_action( 'admin_menu', 'wpd_admin_menu_prerolls', 5 );
-
-// Adds Topcials admin submenu link.
-function wpd_admin_menu_topicals() {
-	// Get permalink base for Topicals.
-	$wpd_topicals_slug = get_option( 'wpd_topicals_slug' );
-
-	// If custom base is empty, set default.
-	if ( '' == $wpd_topicals_slug ) {
-		$wpd_topicals_slug = 'topicals';
-	}
-
-	// Capitalize first letter of new slug.
-	$wpd_topicals_slug_cap = ucfirst( $wpd_topicals_slug );
-
-	add_submenu_page( 'wpd-settings', $wpd_topicals_slug_cap, $wpd_topicals_slug_cap, 'manage_options', 'edit.php?post_type=topicals', null );
-}
-add_action( 'admin_menu', 'wpd_admin_menu_topicals', 6 );
-
-// Adds Growers admin submenu link.
-function wpd_admin_menu_growers() {
-	// Get permalink base for Growers.
-	$wpd_growers_slug = get_option( 'wpd_growers_slug' );
-
-	// If custom base is empty, set default.
-	if ( '' == $wpd_growers_slug ) {
-		$wpd_growers_slug = 'growers';
-	}
-
-	// Capitalize first letter of new slug.
-	$wpd_growers_slug_cap = ucfirst( $wpd_growers_slug );
-
-	add_submenu_page( 'wpd-settings', $wpd_growers_slug_cap, $wpd_growers_slug_cap, 'manage_options', 'edit.php?post_type=growers', null );
-}
-add_action( 'admin_menu', 'wpd_admin_menu_growers', 7 );
+add_action( 'parent_file', 'wpd_keep_taxonomy_menu_open' );

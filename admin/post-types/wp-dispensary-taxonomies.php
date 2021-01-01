@@ -10,13 +10,54 @@
  */
 
 /**
+ * Product Category Taxonomy
+ *
+ * Adds the default Category taxonomy to all custom post types
+ *
+ * @since    4.0
+ */
+function wp_dispensary_products_categories() {
+
+	$labels = array(
+		'name'              => _x( 'Categories', 'taxonomy general name', 'wp-dispensary' ),
+		'singular_name'     => _x( 'Category', 'taxonomy singular name', 'wp-dispensary' ),
+		'search_items'      => __( 'Search Categories', 'wp-dispensary' ),
+		'all_items'         => __( 'All Categories', 'wp-dispensary' ),
+		'parent_item'       => __( 'Parent Category', 'wp-dispensary' ),
+		'parent_item_colon' => __( 'Parent Category:', 'wp-dispensary' ),
+		'edit_item'         => __( 'Edit Category', 'wp-dispensary' ),
+		'update_item'       => __( 'Update Category', 'wp-dispensary' ),
+		'add_new_item'      => __( 'Add New Category', 'wp-dispensary' ),
+		'new_item_name'     => __( 'New Category Name', 'wp-dispensary' ),
+		'not_found'         => __( 'No categories found', 'wp-dispensary' ),
+		'menu_name'         => __( 'Categories', 'wp-dispensary' ),
+	);
+
+	register_taxonomy( 'wpd_categories', 'products', array(
+		'hierarchical'      => true,
+		'labels'            => $labels,
+		'show_ui'           => true,
+		'show_in_rest'      => true,
+		'show_admin_column' => true,
+		'show_in_nav_menus' => true,
+		'query_var'         => true,
+		'rewrite'           => array(
+			'slug'       => 'product-category',
+			'with_front' => true,
+		),
+	) );
+
+}
+add_action( 'init', 'wp_dispensary_products_categories', 0 );
+
+/**
  * Shelf Type
  *
  * Adds the Shelf Type taxonomy to specific custom post types
  *
  * @since    2.1.0
  */
-function wpdispensary_shelf_type() {
+function wp_dispensary_shelf_type() {
 
 	$labels = array(
 		'name'              => _x( 'Shelf Type', 'taxonomy general name', 'wp-dispensary' ),
@@ -33,9 +74,7 @@ function wpdispensary_shelf_type() {
 		'menu_name'         => __( 'Shelf Type', 'wp-dispensary' ),
 	);
 
-	$shelftaxtype = apply_filters( 'wpd_tax_shelf_type', array( 'flowers', 'concentrates', 'prerolls', 'growers' ) );
-
-	register_taxonomy( 'shelf_type', $shelftaxtype, array(
+	register_taxonomy( 'shelf_type', 'products', array(
 		'hierarchical'      => true,
 		'labels'            => $labels,
 		'show_ui'           => true,
@@ -50,7 +89,7 @@ function wpdispensary_shelf_type() {
 	) );
 
 }
-add_action( 'init', 'wpdispensary_shelf_type', 0 );
+add_action( 'init', 'wp_dispensary_shelf_type', 0 );
 
 /**
  * Strain Type
@@ -59,7 +98,7 @@ add_action( 'init', 'wpdispensary_shelf_type', 0 );
  *
  * @since    2.3.0
  */
-function wpdispensary_strain_type() {
+function wp_dispensary_strain_type() {
 
 	$labels = array(
 		'name'              => _x( 'Strain Type', 'taxonomy general name', 'wp-dispensary' ),
@@ -76,9 +115,7 @@ function wpdispensary_strain_type() {
 		'menu_name'         => __( 'Strain Type', 'wp-dispensary' ),
 	);
 
-	$straintaxtype = apply_filters( 'wpd_tax_strain_type', array( 'flowers', 'concentrates', 'prerolls', 'growers' ) );
-
-	register_taxonomy( 'strain_type', $straintaxtype, array(
+	register_taxonomy( 'strain_type', 'products', array(
 		'hierarchical'      => true,
 		'labels'            => $labels,
 		'show_ui'           => true,
@@ -93,7 +130,7 @@ function wpdispensary_strain_type() {
 	) );
 
 }
-add_action( 'init', 'wpdispensary_strain_type', 0 );
+add_action( 'init', 'wp_dispensary_strain_type', 0 );
 
 /**
  * Vendor Taxonomy
@@ -102,7 +139,7 @@ add_action( 'init', 'wpdispensary_strain_type', 0 );
  *
  * @since    1.9.11
  */
-function wpdispensary_vendor() {
+function wp_dispensary_vendor() {
 
 	$labels = array(
 		'name'                       => _x( 'Vendors', 'general name', 'wp-dispensary' ),
@@ -123,20 +160,7 @@ function wpdispensary_vendor() {
 		'menu_name'                  => __( 'Vendors', 'wp-dispensary' ),
 	);
 
-	$menu_types       = wpd_menu_types();
-	$menu_types_names = array();
-
-	// Loop through menu types
-	foreach ( $menu_types as $key=>$value ) {
-		// Strip wpd- from the menu type name.
-		$name = str_replace( 'wpd-', '', $key );
-		// Add menu type name to new array.
-		$menu_types_names[] = $name;
-	}
-
-	$vendor_tax_type = apply_filters( 'wpd_vendor_tax_type', $menu_types_names );
-
-	register_taxonomy( 'vendor', $vendor_tax_type, array(
+	register_taxonomy( 'vendor', 'products', array(
 		'hierarchical'          => false,
 		'labels'                => $labels,
 		'show_ui'               => true,
@@ -151,7 +175,7 @@ function wpdispensary_vendor() {
 	) );
 
 }
-add_action( 'init', 'wpdispensary_vendor', 0 );
+add_action( 'init', 'wp_dispensary_vendor', 0 );
 
 /**
  * Aroma Taxonomy
@@ -160,7 +184,7 @@ add_action( 'init', 'wpdispensary_vendor', 0 );
  *
  * @since    1.0.0
  */
-function wpdispensary_aroma() {
+function wp_dispensary_aroma() {
 
 	$labels = array(
 		'name'                       => _x( 'Aromas', 'general name', 'wp-dispensary' ),
@@ -181,9 +205,7 @@ function wpdispensary_aroma() {
 		'menu_name'                  => __( 'Aromas', 'wp-dispensary' ),
 	);
 
-	$aromataxtype = apply_filters( 'wpd_aroma_tax_type', array( 'flowers', 'concentrates' ) );
-
-	register_taxonomy( 'aroma', $aromataxtype, array(
+	register_taxonomy( 'aroma', 'products', array(
 		'hierarchical'          => false,
 		'labels'                => $labels,
 		'show_ui'               => true,
@@ -198,7 +220,7 @@ function wpdispensary_aroma() {
 	) );
 
 }
-add_action( 'init', 'wpdispensary_aroma', 0 );
+add_action( 'init', 'wp_dispensary_aroma', 0 );
 
 /**
  * Flavor Taxonomy
@@ -207,7 +229,7 @@ add_action( 'init', 'wpdispensary_aroma', 0 );
  *
  * @since    1.0.0
  */
-function wpdispensary_flavor() {
+function wp_dispensary_flavor() {
 
 	$labels = array(
 		'name'                       => _x( 'Flavors', 'general name', 'wp-dispensary' ),
@@ -228,9 +250,7 @@ function wpdispensary_flavor() {
 		'menu_name'                  => __( 'Flavors', 'wp-dispensary' ),
 	);
 
-	$flavortaxtype = apply_filters( 'wpd_flavor_tax_type', array( 'flowers', 'concentrates' ) );
-
-	register_taxonomy( 'flavor', $flavortaxtype, array(
+	register_taxonomy( 'flavor', 'products', array(
 		'hierarchical'          => false,
 		'labels'                => $labels,
 		'show_ui'               => true,
@@ -244,7 +264,7 @@ function wpdispensary_flavor() {
 		),
 	) );
 }
-add_action( 'init', 'wpdispensary_flavor', 0 );
+add_action( 'init', 'wp_dispensary_flavor', 0 );
 
 /**
  * Effect Taxonomy
@@ -253,7 +273,7 @@ add_action( 'init', 'wpdispensary_flavor', 0 );
  *
  * @since    1.0.0
  */
-function wpdispensary_effect() {
+function wp_dispensary_effect() {
 
 	$labels = array(
 		'name'                       => _x( 'Effects', 'general name', 'wp-dispensary' ),
@@ -274,9 +294,7 @@ function wpdispensary_effect() {
 		'menu_name'                  => __( 'Effects', 'wp-dispensary' ),
 	);
 
-	$effecttaxtype = apply_filters( 'wpd_effect_tax_type', array( 'flowers', 'concentrates', 'edibles', 'topicals' ) );
-
-	register_taxonomy( 'effect', $effecttaxtype, array(
+	register_taxonomy( 'effect', 'products', array(
 		'hierarchical'          => false,
 		'labels'                => $labels,
 		'show_ui'               => true,
@@ -290,7 +308,7 @@ function wpdispensary_effect() {
 		),
 	) );
 }
-add_action( 'init', 'wpdispensary_effect', 0 );
+add_action( 'init', 'wp_dispensary_effect', 0 );
 
 /**
  * Symptom Taxonomy
@@ -299,7 +317,7 @@ add_action( 'init', 'wpdispensary_effect', 0 );
  *
  * @since    1.0.0
  */
-function wpdispensary_symptom() {
+function wp_dispensary_symptom() {
 
 	$labels = array(
 		'name'                       => _x( 'Symptoms', 'general name', 'wp-dispensary' ),
@@ -320,9 +338,7 @@ function wpdispensary_symptom() {
 		'menu_name'                  => __( 'Symptoms', 'wp-dispensary' ),
 	);
 
-	$symptomtaxtype = apply_filters( 'wpd_symptom_tax_type', array( 'flowers', 'concentrates', 'edibles', 'topicals' ) );
-
-	register_taxonomy( 'symptom', $symptomtaxtype, array(
+	register_taxonomy( 'symptom', 'products', array(
 		'hierarchical'          => false,
 		'labels'                => $labels,
 		'show_ui'               => true,
@@ -336,7 +352,7 @@ function wpdispensary_symptom() {
 		),
 	) );
 }
-add_action( 'init', 'wpdispensary_symptom', 0 );
+add_action( 'init', 'wp_dispensary_symptom', 0 );
 
 /**
  * Condition Taxonomy
@@ -345,7 +361,7 @@ add_action( 'init', 'wpdispensary_symptom', 0 );
  *
  * @since    1.0.0
  */
-function wpdispensary_condition() {
+function wp_dispensary_condition() {
 
 	$labels = array(
 		'name'                       => _x( 'Conditions', 'general name', 'wp-dispensary' ),
@@ -366,9 +382,7 @@ function wpdispensary_condition() {
 		'menu_name'                  => __( 'Conditions', 'wp-dispensary' ),
 	);
 
-	$conditiontaxtype = apply_filters( 'wpd_condition_tax_type', array( 'flowers', 'concentrates', 'edibles', 'topicals' ) );
-
-	register_taxonomy( 'condition', $conditiontaxtype, array(
+	register_taxonomy( 'condition', 'products', array(
 		'hierarchical'          => false,
 		'labels'                => $labels,
 		'show_ui'               => true,
@@ -382,7 +396,7 @@ function wpdispensary_condition() {
 		),
 	) );
 }
-add_action( 'init', 'wpdispensary_condition', 0 );
+add_action( 'init', 'wp_dispensary_condition', 0 );
 
 /**
  * Ingredient Taxonomy
@@ -391,7 +405,7 @@ add_action( 'init', 'wpdispensary_condition', 0 );
  *
  * @since    1.0.0
  */
-function wpdispensary_ingredient() {
+function wp_dispensary_ingredient() {
 
 	$labels = array(
 		'name'                       => _x( 'Ingredients', 'general name', 'wp-dispensary' ),
@@ -412,9 +426,7 @@ function wpdispensary_ingredient() {
 		'menu_name'                  => __( 'Ingredients', 'wp-dispensary' ),
 	);
 
-	$ingredientstaxtype = apply_filters( 'wpd_ingredients_tax_type', array( 'edibles', 'topicals' ) );
-
-	register_taxonomy( 'ingredients', $ingredientstaxtype, array(
+	register_taxonomy( 'ingredients', 'products', array(
 		'hierarchical'          => false,
 		'labels'                => $labels,
 		'show_ui'               => true,
@@ -428,212 +440,7 @@ function wpdispensary_ingredient() {
 		),
 	) );
 }
-add_action( 'init', 'wpdispensary_ingredient', 0 );
-
-/**
- * Flower Category Taxonomy
- *
- * Adds the Flower Category taxonomy to all custom post types
- *
- * @since    1.0.0
- */
-function wpdispensary_flowercategory() {
-
-	$labels = array(
-		'name'              => _x( 'Categories', 'taxonomy general name', 'wp-dispensary' ),
-		'singular_name'     => _x( 'Category', 'taxonomy singular name', 'wp-dispensary' ),
-		'search_items'      => __( 'Search Categories', 'wp-dispensary' ),
-		'all_items'         => __( 'All Categories', 'wp-dispensary' ),
-		'parent_item'       => __( 'Parent Category', 'wp-dispensary' ),
-		'parent_item_colon' => __( 'Parent Category:', 'wp-dispensary' ),
-		'edit_item'         => __( 'Edit Category', 'wp-dispensary' ),
-		'update_item'       => __( 'Update Category', 'wp-dispensary' ),
-		'add_new_item'      => __( 'Add New Category', 'wp-dispensary' ),
-		'new_item_name'     => __( 'New Category Name', 'wp-dispensary' ),
-		'not_found'         => __( 'No categories found', 'wp-dispensary' ),
-		'menu_name'         => __( 'Categories', 'wp-dispensary' ),
-	);
-
-	register_taxonomy( 'flowers_category', array( 'flowers', 'prerolls' ), array(
-		'hierarchical'      => true,
-		'labels'            => $labels,
-		'show_ui'           => true,
-		'show_in_rest'      => true,
-		'show_admin_column' => true,
-		'show_in_nav_menus' => true,
-		'query_var'         => true,
-		'rewrite'           => array(
-			'slug'       => 'flowers/category',
-			'with_front' => false,
-		),
-	) );
-
-}
-add_action( 'init', 'wpdispensary_flowercategory', 0 );
-
-/**
- * Edible Category Taxonomy
- *
- * Adds the Edible Category taxonomy to all custom post types
- *
- * @since    1.0.0
- */
-function wpdispensary_ediblecategory() {
-
-	$labels = array(
-		'name'              => _x( 'Categories', 'taxonomy general name', 'wp-dispensary' ),
-		'singular_name'     => _x( 'Category', 'taxonomy singular name', 'wp-dispensary' ),
-		'search_items'      => __( 'Search Categories', 'wp-dispensary' ),
-		'all_items'         => __( 'All Categories', 'wp-dispensary' ),
-		'parent_item'       => __( 'Parent Category', 'wp-dispensary' ),
-		'parent_item_colon' => __( 'Parent Category:', 'wp-dispensary' ),
-		'edit_item'         => __( 'Edit Category', 'wp-dispensary' ),
-		'update_item'       => __( 'Update Category', 'wp-dispensary' ),
-		'add_new_item'      => __( 'Add New Category', 'wp-dispensary' ),
-		'new_item_name'     => __( 'New Category Name', 'wp-dispensary' ),
-		'not_found'         => __( 'No categories found', 'wp-dispensary' ),
-		'menu_name'         => __( 'Categories', 'wp-dispensary' ),
-	);
-
-	register_taxonomy( 'edibles_category', 'edibles', array(
-		'hierarchical'      => true,
-		'labels'            => $labels,
-		'show_ui'           => true,
-		'show_in_rest'      => true,
-		'show_admin_column' => true,
-		'show_in_nav_menus' => true,
-		'query_var'         => true,
-		'rewrite'           => array(
-			'slug'       => 'edibles/category',
-			'with_front' => false,
-		),
-	) );
-
-}
-add_action( 'init', 'wpdispensary_ediblecategory', 0 );
-
-/**
- * Concentrate Category Taxonomy
- *
- * Adds the Concentrate Category taxonomy to all custom post types
- *
- * @since    1.0.0
- */
-function wpdispensary_concentratecategory() {
-
-	$labels = array(
-		'name'              => _x( 'Categories', 'taxonomy general name', 'wp-dispensary' ),
-		'singular_name'     => _x( 'Category', 'taxonomy singular name', 'wp-dispensary' ),
-		'search_items'      => __( 'Search Categories', 'wp-dispensary' ),
-		'all_items'         => __( 'All Categories', 'wp-dispensary' ),
-		'parent_item'       => __( 'Parent Category', 'wp-dispensary' ),
-		'parent_item_colon' => __( 'Parent Category:', 'wp-dispensary' ),
-		'edit_item'         => __( 'Edit Category', 'wp-dispensary' ),
-		'update_item'       => __( 'Update Category', 'wp-dispensary' ),
-		'add_new_item'      => __( 'Add New Category', 'wp-dispensary' ),
-		'new_item_name'     => __( 'New Category Name', 'wp-dispensary' ),
-		'not_found'         => __( 'No categories found', 'wp-dispensary' ),
-		'menu_name'         => __( 'Categories', 'wp-dispensary' ),
-	);
-
-	register_taxonomy( 'concentrates_category', 'concentrates', array(
-		'hierarchical'      => true,
-		'labels'            => $labels,
-		'show_ui'           => true,
-		'show_in_rest'      => true,
-		'show_admin_column' => true,
-		'show_in_nav_menus' => true,
-		'query_var'         => true,
-		'rewrite'           => array(
-			'slug'       => 'concentrates/category',
-			'with_front' => false,
-		),
-	) );
-
-}
-add_action( 'init', 'wpdispensary_concentratecategory', 0 );
-
-/**
- * Topical Category Taxonomy
- *
- * Adds the Topical Category taxonomy to all custom post types
- *
- * @since    1.4.0
- */
-function wpdispensary_topicalcategory() {
-
-	$labels = array(
-		'name'              => _x( 'Categories', 'taxonomy general name', 'wp-dispensary' ),
-		'singular_name'     => _x( 'Category', 'taxonomy singular name', 'wp-dispensary' ),
-		'search_items'      => __( 'Search Categories', 'wp-dispensary' ),
-		'all_items'         => __( 'All Categories', 'wp-dispensary' ),
-		'parent_item'       => __( 'Parent Category', 'wp-dispensary' ),
-		'parent_item_colon' => __( 'Parent Category:', 'wp-dispensary' ),
-		'edit_item'         => __( 'Edit Category', 'wp-dispensary' ),
-		'update_item'       => __( 'Update Category', 'wp-dispensary' ),
-		'add_new_item'      => __( 'Add New Category', 'wp-dispensary' ),
-		'new_item_name'     => __( 'New Category Name', 'wp-dispensary' ),
-		'not_found'         => __( 'No categories found', 'wp-dispensary' ),
-		'menu_name'         => __( 'Categories', 'wp-dispensary' ),
-	);
-
-	register_taxonomy( 'topicals_category', 'topicals', array(
-		'hierarchical'      => true,
-		'labels'            => $labels,
-		'show_ui'           => true,
-		'show_in_rest'      => true,
-		'show_admin_column' => true,
-		'show_in_nav_menus' => true,
-		'query_var'         => true,
-		'rewrite'           => array(
-			'slug'       => 'topicals/category',
-			'with_front' => false,
-		),
-	) );
-
-}
-add_action( 'init', 'wpdispensary_topicalcategory', 0 );
-
-/**
- * Grower Category Taxonomy
- *
- * Adds the Grower Category taxonomy to all custom post types
- *
- * @since    1.7.0
- */
-function wpdispensary_growerscategory() {
-
-	$labels = array(
-		'name'              => _x( 'Categories', 'taxonomy general name', 'wp-dispensary' ),
-		'singular_name'     => _x( 'Category', 'taxonomy singular name', 'wp-dispensary' ),
-		'search_items'      => __( 'Search Categories', 'wp-dispensary' ),
-		'all_items'         => __( 'All Categories', 'wp-dispensary' ),
-		'parent_item'       => __( 'Parent Category', 'wp-dispensary' ),
-		'parent_item_colon' => __( 'Parent Category:', 'wp-dispensary' ),
-		'edit_item'         => __( 'Edit Category', 'wp-dispensary' ),
-		'update_item'       => __( 'Update Category', 'wp-dispensary' ),
-		'add_new_item'      => __( 'Add New Category', 'wp-dispensary' ),
-		'new_item_name'     => __( 'New Category Name', 'wp-dispensary' ),
-		'not_found'         => __( 'No categories found', 'wp-dispensary' ),
-		'menu_name'         => __( 'Categories', 'wp-dispensary' ),
-	);
-
-	register_taxonomy( 'growers_category', 'growers', array(
-		'hierarchical'      => true,
-		'labels'            => $labels,
-		'show_ui'           => true,
-		'show_in_rest'      => true,
-		'show_admin_column' => true,
-		'show_in_nav_menus' => true,
-		'query_var'         => true,
-		'rewrite'           => array(
-			'slug'       => 'growers/category',
-			'with_front' => false,
-		),
-	) );
-
-}
-add_action( 'init', 'wpdispensary_growerscategory', 0 );
+add_action( 'init', 'wp_dispensary_ingredient', 0 );
 
 /**
  * Allergens Taxonomy
@@ -642,7 +449,7 @@ add_action( 'init', 'wpdispensary_growerscategory', 0 );
  *
  * @since    2.3.0
  */
-function wpdispensary_allergens() {
+function wp_dispensary_allergens() {
 
 	$labels = array(
 		'name'                       => _x( 'Allergens', 'general name', 'wp-dispensary' ),
@@ -663,9 +470,7 @@ function wpdispensary_allergens() {
 		'menu_name'                  => __( 'Allergens', 'wp-dispensary' ),
 	);
 
-	$allergenstaxtype = apply_filters( 'wpd_allergens_tax_type', array( 'edibles' ) );
-
-	register_taxonomy( 'allergens', $allergenstaxtype, array(
+	register_taxonomy( 'allergens', 'products', array(
 		'hierarchical'          => false,
 		'labels'                => $labels,
 		'show_ui'               => true,
@@ -680,4 +485,4 @@ function wpdispensary_allergens() {
 	) );
 
 }
-add_action( 'init', 'wpdispensary_allergens', 0 );
+add_action( 'init', 'wp_dispensary_allergens', 0 );

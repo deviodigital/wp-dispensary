@@ -1,6 +1,6 @@
 <?php
 /**
- * Depreciated shortcodes that are still able to be used, but will no longer be
+ * deprecated shortcodes that are still able to be used, but will no longer be
  * updated with new features. Please use the [wpd_menu] shortcode.
  *
  * @link       https://www.wpdispensary.com
@@ -9,6 +9,11 @@
  * @package    WP_Dispensary
  * @subpackage WP_Dispensary/admin
  */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Flowers Shortcode Fuction
@@ -936,22 +941,22 @@ function wpdispensary_topicals_shortcode( $atts ) {
 		$topicalpricing = apply_filters( 'wpd_shortcodes_product_price', $topicalpricing );
 
 		// Size.
-		if ( get_post_meta( get_the_ID(), '_sizetopical', true ) ) {
-			$topicalsize = '<span class="wpd-productinfo size"><strong>' . __( 'Size:', 'wp-dispensary' ) . '</strong> ' . get_post_meta( get_the_id(), '_sizetopical', true ) . 'oz</span>';
+		if ( get_post_meta( get_the_ID(), 'product_size', true ) ) {
+			$topicalsize = '<span class="wpd-productinfo size"><strong>' . __( 'Size:', 'wp-dispensary' ) . '</strong> ' . get_post_meta( get_the_id(), 'product_size ', true ) . 'oz</span>';
 		} else {
 			$topicalsize = '';
 		}
 
 		// THC.
-		if ( get_post_meta( get_the_ID(), '_thctopical', true ) ) {
-			$topicalthc = '<span class="wpd-productinfo thc"><strong>' . __( 'THC:', 'wp-dispensary' ) . '</strong> ' . get_post_meta( get_the_id(), '_thctopical', true ) . 'mg</span>';
+		if ( get_post_meta( get_the_ID(), 'compounds_thc', true ) ) {
+			$topicalthc = '<span class="wpd-productinfo thc"><strong>' . __( 'THC:', 'wp-dispensary' ) . '</strong> ' . get_post_meta( get_the_id(), 'compounds_thc', true ) . 'mg</span>';
 		} else {
 			$topicalthc = '';
 		}
 
 		// CBD.
-		if ( get_post_meta( get_the_ID(), '_cbdtopical', true ) ) {
-			$topicalcbd = '<span class="wpd-productinfo cbd"><strong>' . __( 'CBD:', 'wp-dispensary' ) . '</strong> ' . get_post_meta( get_the_id(), '_cbdtopical', true ) . 'mg</span>';
+		if ( get_post_meta( get_the_ID(), 'compounds_cbd', true ) ) {
+			$topicalcbd = '<span class="wpd-productinfo cbd"><strong>' . __( 'CBD:', 'wp-dispensary' ) . '</strong> ' . get_post_meta( get_the_id(), 'compounds_cbd', true ) . 'mg</span>';
 		} else {
 			$topicalcbd = '';
 		}
@@ -1097,15 +1102,15 @@ function wpdispensary_growers_shortcode( $atts ) {
 		$growerspricing = apply_filters( 'wpd_shortcodes_product_price', $growerspricing );
 
 		// Seed count.
-		if ( get_post_meta( get_the_ID(), '_seedcount', true ) ) {
-			$wpdseedcount = '<span class="wpd-productinfo seeds"><strong>' . __( 'Seeds:', 'wp-dispensary' ) . '</strong> ' . get_post_meta( get_the_id(), '_seedcount', true ) . '</span>';
+		if ( get_post_meta( get_the_ID(), 'seed_count', true ) ) {
+			$wpdseedcount = '<span class="wpd-productinfo seeds"><strong>' . __( 'Seeds:', 'wp-dispensary' ) . '</strong> ' . get_post_meta( get_the_id(), 'seed_count', true ) . '</span>';
 		} else {
 			$wpdseedcount = '';
 		}
 
 		// Clone count.
-		if ( get_post_meta( get_the_ID(), '_clonecount', true ) ) {
-			$wpdclonecount = '<span class="wpd-productinfo clones"><strong>' . __( 'Clones:', 'wp-dispensary' ) . '</strong> ' . get_post_meta( get_the_id(), '_clonecount', true ) . '</span>';
+		if ( get_post_meta( get_the_ID(), 'clone_count', true ) ) {
+			$wpdclonecount = '<span class="wpd-productinfo clones"><strong>' . __( 'Clones:', 'wp-dispensary' ) . '</strong> ' . get_post_meta( get_the_id(), 'clone_count', true ) . '</span>';
 		} else {
 			$wpdclonecount = '';
 		}
@@ -1165,3 +1170,326 @@ function wpdispensary_growers_shortcode( $atts ) {
 	return $wpdposts . '</div>';
 }
 add_shortcode( 'wpd-growers', 'wpdispensary_growers_shortcode' );
+
+/**
+ * Carousel Shortcode Fuction
+ *
+ * @access public
+ *
+ * @return string HTML markup.
+ */
+function wpdispensary_carousel_shortcode( $atts ) {
+	// Menu types (string).
+	$menu_types = implode ( ', ', wpd_menu_types_simple( true ) );
+
+	// Attributes.
+	extract( shortcode_atts(
+		array(
+			'posts'       => '18',
+			'class'       => '',
+			'id'          => '',
+			'title'       => esc_attr__( 'Recent Products', 'wp-dispensary' ),
+			'name'        => 'show',
+			'info'        => 'show',
+			'thc'         => 'show',
+			'thca'        => '',
+			'cbd'         => '',
+			'cba'         => '',
+			'cbn'         => '',
+			'cbg'         => '',
+			'category'    => '',
+			'aroma'       => '',
+			'flavor'      => '',
+			'effect'      => '',
+			'symptom'     => '',
+			'condition'   => '',
+			'vendor'      => '',
+			'shelf_type'  => '',
+			'strain_type' => '',
+			'total_thc'   => 'show',
+			'seed_count'  => 'show',
+			'clone_count' => 'show',
+			'size'        => 'show',
+			'weight'      => 'show',
+			'servings'    => '',
+			'orderby'     => '',
+			'meta_key'    => '',
+			'type'        => $menu_types,
+			'image'       => 'show',
+			'imgsize'     => 'wpd-small',
+		),
+		$atts,
+		'wpd_carousel'
+	) );
+
+	/**
+	 * Defining variables
+	 */
+	$order    = '';
+	$ordernew = '';
+
+	/**
+	 * Code to create shortcode
+	 */
+
+	// Create $tax_query variable.
+	$tax_query = array(
+		'relation' => 'AND',
+	);
+
+	// Add aromas to $tax_query.
+	if ( '' !== $aroma ) {
+		$tax_query[] = array(
+			'taxonomy' => 'aroma',
+			'field'    => 'slug',
+			'terms'    => $aroma,
+		);
+	}
+
+	// Add flavors to $tax_query.
+	if ( '' !== $flavor ) {
+		$tax_query[] = array(
+			'taxonomy' => 'flavor',
+			'field'    => 'slug',
+			'terms'    => $flavor,
+		);
+	}
+
+	// Add effects to $tax_query.
+	if ( '' !== $effect ) {
+		$tax_query[] = array(
+			'taxonomy' => 'effect',
+			'field'    => 'slug',
+			'terms'    => $effect,
+		);
+	}
+
+	// Add symptoms to $tax_query.
+	if ( '' !== $symptom ) {
+		$tax_query[] = array(
+			'taxonomy' => 'symptom',
+			'field'    => 'slug',
+			'terms'    => $symptom,
+		);
+	}
+
+	// Add conditions to $tax_query.
+	if ( '' !== $condition ) {
+		$tax_query[] = array(
+			'taxonomy' => 'condition',
+			'field'    => 'slug',
+			'terms'    => $condition,
+		);
+	}
+
+	// Add vendors to $tax_query.
+	if ( '' !== $vendor ) {
+		$tax_query[] = array(
+			'taxonomy' => 'vendor',
+			'field'    => 'slug',
+			'terms'    => $vendor,
+		);
+	}
+
+	// Add shelf types to $tax_query.
+	if ( '' !== $shelf_type ) {
+		$tax_query[] = array(
+			'taxonomy' => 'shelf_type',
+			'field'    => 'slug',
+			'terms'    => $shelf_type,
+		);
+	}
+
+	// Add strain types to $tax_query.
+	if ( '' !== $strain_type ) {
+		$tax_query[] = array(
+			'taxonomy' => 'strain_type',
+			'field'    => 'slug',
+			'terms'    => $strain_type,
+		);
+	}
+
+	// Order by.
+	if ( '' !== $orderby ) {
+		$order    = $orderby;
+		$ordernew = 'ASC';
+	}
+
+	// Create $cat_tax_query variable.
+	$cat_tax_query = array(
+		'relation' => 'OR',
+	);
+
+	// Turn shortcode type="" input into an array.
+	$array_type = explode( ', ', $type );
+
+	// Turn shortcode category="" input into an array.
+	$new_category = explode( ', ', $category );
+
+	// If category="" isn't empty, add to $cat_tax_query.
+	if ( ! empty( $category ) ) {
+
+		// Add tinctures categories to $cat_tax_query.
+		$cat_tax_query[] = array(
+			'taxonomy' => 'wpd_categories',
+			'field'    => 'name',
+			'terms'    => $new_category,
+		);
+
+	}
+
+	// Create new tax query.
+	$new_tax_query = array_merge( $tax_query, $cat_tax_query );
+
+	// Create WP_Query args.
+	$args = apply_filters( 'wpd_carousel_shortcode_args', array(
+		'post_type'      => explode( ', ', $type ),
+		'posts_per_page' => $posts,
+		'tax_query'      => $new_tax_query,
+		'orderby'        => $order,
+		'order'          => $ordernew,
+		'meta_key'       => $meta_key,
+	) );
+
+	// Create new WP_Query.
+	$wpdquery = new WP_Query( $args );
+
+	// Title.
+	if ( '' === $title ) {
+		$showtitle = '';
+	} else {
+		$showtitle = '<h2 class="wpd-title">' . $title . '</h2>';
+	}
+
+	$wpdposts = '<div id="' . $id . '" class="carouselwrap">' . $showtitle . '<div class="wpd-carousel">';
+
+	while ( $wpdquery->have_posts() ) :
+		$wpdquery->the_post();
+
+		// Product title.
+		$querytitle = get_the_title();
+
+		// Product details.
+		$product_details = array(
+			'thc'         => $thc,
+			'thca'        => $thca,
+			'cbd'         => $cbd,
+			'cba'         => $cba,
+			'cbn'         => $cbn,
+			'cbg'         => $cbg,
+			'seed_count'  => $seed_count,
+			'clone_count' => $clone_count,
+			'total_thc'   => $total_thc,
+			'size'        => $size,
+			'servings'    => $servings,
+			'weight'      => $weight
+		);
+
+		$show_info = get_wpd_product_details( get_the_ID(), $product_details, 'span' );
+
+		// Product name.
+		if ( 'show' === $name ) {
+			$showname = '<h2 class="wpd-producttitle"><a href="' . get_permalink() . '">' . $querytitle . '</a></h2>';
+		} else {
+			$showname = '';
+		}
+
+		// Growers info.
+		if ( in_array( get_post_meta( get_the_ID(), 'product_type', true ), array( 'growers' ) ) ) {
+			if ( 'show' === $info ) {
+				$showinfo = '<span class="wpd-productinfo pricing"><strong>' . esc_html( get_wpd_pricing_phrase( $singular = true ) ) . ':</strong> ' . get_wpd_growers_prices_simple( get_the_ID(), NULL ) . '</span>';
+			} else {
+				$showinfo = '';
+			}
+		}
+
+		// Topicals info.
+		if ( in_array( get_post_meta( get_the_ID(), 'product_type', true ), array( 'topicals' ) ) ) {
+			if ( 'show' === $info ) {
+				$showinfo = '<span class="wpd-productinfo pricing"><strong>' . esc_html( get_wpd_pricing_phrase( $singular = true ) ) . ':</strong> ' . get_wpd_topicals_prices_simple( get_the_ID(), NULL) . '</span>';
+			} else {
+				$showinfo = '';
+			}
+		}
+
+		// Pre-rolls.
+		if ( in_array( get_post_meta( get_the_ID(), 'product_type', true ), array( 'prerolls' ) ) ) {
+			if ( 'show' === $info ) {
+				$showinfo = '<span class="wpd-productinfo pricing"><strong>' . esc_html( get_wpd_pricing_phrase( $singular = true ) ) . ':</strong> ' . get_wpd_prerolls_prices_simple( get_the_ID(), NULL ) . '</span>';
+			} else {
+				$showinfo = '';
+			}
+		}
+
+		// Edibles.
+		if ( in_array( get_post_meta( get_the_ID(), 'product_type', true ), array( 'edibles' ) ) ) {
+			if ( 'show' === $info ) {
+				$showinfo = '<span class="wpd-productinfo pricing"><strong>' . esc_html( get_wpd_pricing_phrase( $singular = true ) ) . ':</strong> ' . get_wpd_edibles_prices_simple( get_the_ID(), NULL ) . '</span>';
+			} else {
+				$showinfo = '';
+			}
+		}
+
+		// Concentrates.
+		if ( in_array( get_post_meta( get_the_ID(), 'product_type', true ), array( 'concentrates' ) ) ) {
+			if ( 'show' === $info ) {
+				$showinfo = '<span class="wpd-productinfo pricing"><strong>' . esc_html( get_wpd_pricing_phrase( $singular = true ) ) . ':</strong> ' . get_wpd_concentrates_prices_simple( get_the_ID(), NULL ) . '</span>';
+			} else {
+				$showinfo = '';
+			}
+		}
+
+		// Flowers.
+		if ( in_array( get_post_meta( get_the_ID(), 'product_type', true ), array( 'flowers' ) ) ) {
+			if ( 'show' === $info ) {
+				$showinfo = '<span class="wpd-productinfo pricing"><strong>' . esc_html( get_wpd_pricing_phrase( $singular = true ) ) . ':</strong> ' . get_wpd_flowers_prices_simple( get_the_ID(), NULL ) . '</span>';
+			} else {
+				$showinfo = '';
+			}
+		}
+
+		// Product info.
+		$showinfo = apply_filters( 'wpd_shortcodes_product_price', $showinfo );
+
+		// Set empty variable for image.
+		$wpd_image = '';
+
+		// Set image if set to show.
+		if ( 'show' === $image ) {
+			$wpd_image = get_wpd_product_image( get_the_ID(), $imgsize );
+		}
+
+		/** Shortcode display */
+
+		ob_start();
+			do_action( 'wpd_shortcode_inside_top' );
+			$wpd_inside_top = ob_get_contents();
+		ob_end_clean();
+
+		ob_start();
+			do_action( 'wpd_shortcode_top_carousel' );
+			$wpd_top_carousel = ob_get_contents();
+		ob_end_clean();
+
+		$wpdposts .= '<div class="carousel-item ' . $class . '">' . $wpd_top_carousel . $wpd_inside_top . $wpd_image;
+
+		ob_start();
+			do_action( 'wpd_shortcode_inside_bottom' );
+			$wpd_inside_bottom = ob_get_contents();
+		ob_end_clean();
+
+		ob_start();
+			do_action( 'wpd_shortcode_bottom_carousel' );
+			$wpd_bottom_carousel = ob_get_contents();
+		ob_end_clean();
+
+		$wpdposts .= $showname . $showinfo . $show_info . $wpd_inside_bottom . $wpd_bottom_carousel . '</div>';
+
+	endwhile;
+
+	wp_reset_postdata();
+
+	return $wpdposts . '</div></div>';
+}
+add_shortcode( 'wpd-carousel', 'wpdispensary_carousel_shortcode' );
+

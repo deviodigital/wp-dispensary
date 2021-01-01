@@ -67,12 +67,15 @@ if ( class_exists( 'WPD_ADMIN_SETTINGS' ) ) {
 
 	// Get all pages.
 	$pages = get_pages( $args );
+
 	// Loop through pages.
-	foreach ( $pages as $page ) {
-		$pages_array[$page->post_name] = $page->post_title;
+	if ( ! empty( $pages ) ) {
+		foreach ( $pages as $page ) {
+			$pages_array[$page->post_name] = $page->post_title;
+		}
 	}
 
-	//print_r( $pages_array );
+	//var_dump( $pages_array );
 
 	/**
 	 * Object Instantiation.
@@ -629,8 +632,12 @@ if ( class_exists( 'WPD_ADMIN_SETTINGS' ) ) {
 		);
 
 		// Update pages array.
-		$redirect_pages = $pages_array;
-		array_unshift( $redirect_pages, esc_attr__( 'Select a page', 'wp-dispensary' ) );
+		if ( ! empty( $pages ) ) {
+			$pages_array = $pages_array;
+			array_unshift( $pages_array, esc_attr__( 'Select a page', 'wp-dispensary' ) );
+		} else {
+			$pages_array = array( esc_attr__( 'No pages found', 'wp-dispensary' ) );
+		}
 
 		/**
 		 * Add Field: Redirect after registration
@@ -644,7 +651,7 @@ if ( class_exists( 'WPD_ADMIN_SETTINGS' ) ) {
 				'type'    => 'select',
 				'name'    => esc_attr__( 'Redirect after registration', 'wp-dispensary' ),
 				'desc'    => esc_attr__( 'Choose the page patients will be redirected to when registering.', 'wp-dispensary' ),
-				'options' => $redirect_pages,
+				'options' => $pages_array,
 			)
 		);
 

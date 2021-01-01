@@ -17,7 +17,7 @@
  *
  * @package    WP_Dispensary
  * @subpackage WP_Dispensary/admin
- * @author     Robert DeVore <deviodigital@gmail.com>
+ * @author     WP Dispensary <contact@wpdispensary.com>
  */
 class CSVExport {
     /**
@@ -53,7 +53,7 @@ class CSVExport {
     * Add extra menu items for admins
     */
     public function admin_menu() {
-        add_submenu_page( 'wpd-settings', 'Export Products', 'Export Products', 'manage_options', 'export_products', array( $this, 'export_products' ) );
+        add_submenu_page( 'wpd-settings', __( 'Export Products', 'wp-dispensary' ), __ ( 'Export Products', 'wp-dispensary' ), 'manage_options', 'export_products', array( $this, 'export_products' ) );
     }
 
     /**
@@ -126,7 +126,7 @@ class CSVExport {
 
         global $wpdb;
 
-        $sql      = 'SELECT * FROM ' . $wpdb->posts . ' AS P WHERE P.post_type IN ( "flowers", "concentrates", "edibles", "prerolls", "topicals", "growers", "gear", "tinctures" ) and P.post_status = "publish"';
+        $sql      = 'SELECT * FROM ' . $wpdb->posts . ' AS P WHERE P.post_type IN ( "products" ) and P.post_status = "publish"';
         $products = $wpdb->get_results( $sql, 'ARRAY_A' );
 
         // Set the rows (matches headers).
@@ -135,10 +135,9 @@ class CSVExport {
             // Cat ID.
             $cat_id = array();
 
-            if ( 'flowers' == $product['post_type'] ) {
-                $inventory_amount = get_post_meta( $product['ID'], '_inventory_flowers', TRUE );
-//                $category_name    = get_the_terms( $product['ID'], 'flowers_category' );
-                $category_name    = wp_get_post_terms( $product['ID'], 'flowers_category', array( 'fields' => 'ids' ) );
+            if ( 'flowers' == get_post_meta( $product['ID'], 'product_type', true ) ) {
+                $inventory_amount = get_post_meta( $product['ID'], 'inventory_grams', TRUE );
+                $category_name    = wp_get_post_terms( $product['ID'], 'wpd_categories', array( 'fields' => 'ids' ) );
                 $price_each       = '';
                 if ( $category_name && ! is_wp_error( $category_name ) ) {
                     foreach ( $category_name as $cat=>$value ) {
@@ -147,11 +146,10 @@ class CSVExport {
                 }
             }
             
-            if ( 'concentrates' == $product['post_type'] ) {
-                $inventory_amount = get_post_meta( $product['ID'], '_inventory_concentrates', TRUE );
-//                $category_name    = get_the_terms( $product['ID'], 'concentrates_category' );
-                $category_name    = wp_get_post_terms( $product['ID'], 'concentrates_category', array( 'fields' => 'ids' ) );
-                $price_each       = get_post_meta( $product['ID'], '_priceeach', TRUE );
+            if ( 'concentrates' == get_post_meta( $product['ID'], 'product_type', true ) ) {
+                $inventory_amount = get_post_meta( $product['ID'], 'inventory_units', TRUE );
+                $category_name    = wp_get_post_terms( $product['ID'], 'wpd_categories', array( 'fields' => 'ids' ) );
+                $price_each       = get_post_meta( $product['ID'], 'price_each', TRUE );
                 if ( $category_name && ! is_wp_error( $category_name ) ) {
                     foreach ( $category_name as $cat=>$value ) {
                         $cat_id[] = $value;
@@ -159,11 +157,10 @@ class CSVExport {
                 }
             }
             
-            if ( 'edibles' == $product['post_type'] ) {
-                $inventory_amount = get_post_meta( $product['ID'], '_inventory_edibles', TRUE );
-//                $category_name    = get_the_terms( $product['ID'], 'edibles_category' );
-                $category_name    = wp_get_post_terms( $product['ID'], 'edibles_category', array( 'fields' => 'ids' ) );
-                $price_each       = get_post_meta( $product['ID'], '_priceeach', TRUE );
+            if ( 'edibles' == get_post_meta( $product['ID'], 'product_type', true ) ) {
+                $inventory_amount = get_post_meta( $product['ID'], 'inventory_units', TRUE );
+                $category_name    = wp_get_post_terms( $product['ID'], 'wpd_categories', array( 'fields' => 'ids' ) );
+                $price_each       = get_post_meta( $product['ID'], 'price_each', TRUE );
                 if ( $category_name && ! is_wp_error( $category_name ) ) {
                     foreach ( $category_name as $cat=>$value ) {
                         $cat_id[] = $value;
@@ -171,11 +168,10 @@ class CSVExport {
                 }
             }
             
-            if ( 'prerolls' == $product['post_type'] ) {
-                $inventory_amount = get_post_meta( $product['ID'], '_inventory_prerolls', TRUE );
-//                $category_name    = get_the_terms( $product['ID'], 'prerolls_category' );
-                $category_name    = wp_get_post_terms( $product['ID'], 'flowers_category', array( 'fields' => 'ids' ) );
-                $price_each       = get_post_meta( $product['ID'], '_priceeach', TRUE );
+            if ( 'prerolls' == get_post_meta( $product['ID'], 'product_type', true ) ) {
+                $inventory_amount = get_post_meta( $product['ID'], 'inventory_units', TRUE );
+                $category_name    = wp_get_post_terms( $product['ID'], 'wpd_categories', array( 'fields' => 'ids' ) );
+                $price_each       = get_post_meta( $product['ID'], 'price_each', TRUE );
                 if ( $category_name && ! is_wp_error( $category_name ) ) {
                     foreach ( $category_name as $cat=>$value ) {
                         $cat_id[] = $value;
@@ -183,21 +179,19 @@ class CSVExport {
                 }
             }
             
-            if ( 'topicals' == $product['post_type'] ) {
-                $inventory_amount = get_post_meta( $product['ID'], '_inventory_topicals', TRUE );
-//                $category_name    = get_the_terms( $product['ID'], 'topicals_category' );
-                $category_name    = wp_get_post_terms( $product['ID'], 'topicals_category', array( 'fields' => 'ids' ) );
-                $price_each       = get_post_meta( $product['ID'], '_pricetopical', TRUE );
+            if ( 'topicals' == get_post_meta( $product['ID'], 'product_type', true ) ) {
+                $inventory_amount = get_post_meta( $product['ID'], 'inventory_units', TRUE );
+                $category_name    = wp_get_post_terms( $product['ID'], 'wpd_categories', array( 'fields' => 'ids' ) );
+                $price_each       = get_post_meta( $product['ID'], 'price_each', TRUE );
                 if ( $category_name && ! is_wp_error( $category_name ) ) {
                     foreach ( $category_name as $cat=>$value ) {
                         $cat_id[] = $value;
                     }
                 }
-            } elseif ( 'growers' == $product['post_type'] ) {
-                $inventory_amount = get_post_meta( $product['ID'], '_inventory_growers', TRUE );
-//                $category_name    = get_the_terms( $product['ID'], 'growers_category' );
-                $category_name    = wp_get_post_terms( $product['ID'], 'growers_category', array( 'fields' => 'ids' ) );
-                $price_each       = get_post_meta( $product['ID'], '_priceeach', TRUE );
+            } elseif ( 'growers' == get_post_meta( $product['ID'], 'product_type', true ) ) {
+                $inventory_amount = get_post_meta( $product['ID'], 'inventory_units', TRUE );
+                $category_name    = wp_get_post_terms( $product['ID'], 'wpd_categories', array( 'fields' => 'ids' ) );
+                $price_each       = get_post_meta( $product['ID'], 'price_each', TRUE );
                 if ( $category_name && ! is_wp_error( $category_name ) ) {
                     foreach ( $category_name as $cat=>$value ) {
                         $cat_id[] = $value;
@@ -205,11 +199,10 @@ class CSVExport {
                 }
             }
             
-            if ( 'gear' == $product['post_type'] ) {
-                $inventory_amount = get_post_meta( $product['ID'], '_inventory_gear', TRUE );
-//                $category_name    = get_the_terms( $product['ID'], 'wpd_gear_category' );
-                $category_name    = wp_get_post_terms( $product['ID'], 'wpd_gear_category', array( 'fields' => 'ids' ) );
-                $price_each       = get_post_meta( $product['ID'], '_priceeach', TRUE );
+            if ( 'gear' == get_post_meta( $product['ID'], 'product_type', true ) ) {
+                $inventory_amount = get_post_meta( $product['ID'], 'inventory_units', TRUE );
+                $category_name    = wp_get_post_terms( $product['ID'], 'wpd_categories', array( 'fields' => 'ids' ) );
+                $price_each       = get_post_meta( $product['ID'], 'price_each', TRUE );
                 if ( $category_name && ! is_wp_error( $category_name ) ) {
                     foreach ( $category_name as $cat=>$value ) {
                         $cat_id[] = $value;
@@ -217,11 +210,10 @@ class CSVExport {
                 }
             } 
             
-            if ( 'tinctures' == $product['post_type'] ) {
-                $inventory_amount = get_post_meta( $product['ID'], '_inventory_tinctures', TRUE );
-//                $category_name    = get_the_terms( $product['ID'], 'tinctures_category' );
-                $category_name    = wp_get_post_terms( $product['ID'], 'tinctures_category', array( 'fields' => 'ids' ) );
-                $price_each       = get_post_meta( $product['ID'], '_priceeach', TRUE );
+            if ( 'tinctures' == get_post_meta( $product['ID'], 'product_type', true ) ) {
+                $inventory_amount = get_post_meta( $product['ID'], 'inventory_units', TRUE );
+                $category_name    = wp_get_post_terms( $product['ID'], 'wpd_categories', array( 'fields' => 'ids' ) );
+                $price_each       = get_post_meta( $product['ID'], 'price_each', TRUE );
                 if ( $category_name && ! is_wp_error( $category_name ) ) {
                     foreach ( $category_name as $cat=>$value ) {
                         $cat_id[] = $value;
@@ -234,25 +226,25 @@ class CSVExport {
             // Create row.
             $row = array(
                 $product['ID'],
-                $product['post_type'],
+                get_post_meta( $product['ID'], 'product_type', true ),
                 $product['post_title'],
                 $product['post_content'],
                 $product['post_name'],
                 $product['post_date'],
                 $product['post_author'],
-                get_post_meta( $product['ID'], '_halfgram', TRUE ),
-                get_post_meta( $product['ID'], '_gram', TRUE ),
-                get_post_meta( $product['ID'], '_twograms', TRUE ),
-                get_post_meta( $product['ID'], '_eighth', TRUE ),
-                get_post_meta( $product['ID'], '_fivegrams', TRUE ),
-                get_post_meta( $product['ID'], '_quarter', TRUE ),
-                get_post_meta( $product['ID'], '_halfounce', TRUE ),
-                get_post_meta( $product['ID'], '_ounce', TRUE ),
+                get_post_meta( $product['ID'], 'price_half_gram', TRUE ),
+                get_post_meta( $product['ID'], 'price_gram', TRUE ),
+                get_post_meta( $product['ID'], 'price_two_grams', TRUE ),
+                get_post_meta( $product['ID'], 'price_eighth', TRUE ),
+                get_post_meta( $product['ID'], 'price_five_grams', TRUE ),
+                get_post_meta( $product['ID'], 'price_quarter_ounce', TRUE ),
+                get_post_meta( $product['ID'], 'price_half_ounce', TRUE ),
+                get_post_meta( $product['ID'], 'price_ounce', TRUE ),
                 $price_each,
-                get_post_meta( $product['ID'], '_priceperpack', TRUE ),
-                get_post_meta( $product['ID'], '_unitsperpack', TRUE ),
+                get_post_meta( $product['ID'], 'price_per_pack', TRUE ),
+                get_post_meta( $product['ID'], 'units_per_pack', TRUE ),
                 $inventory_amount,
-                $cat_id,
+                str_putcsv( $cat_id ),
                 get_post_thumbnail_id( $product['ID'] ),
             );
             $data_rows[] = apply_filters( 'wpd_csv_export_data_row', $row );

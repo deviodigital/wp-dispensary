@@ -2,7 +2,7 @@
 Contributors: wpdispensary, deviodigital
 Tags: cannabis, dispensary, menu, marijuana, weed, wp-dispensary, pot, mmj, mmp, menu-management, medical-marijuana
 Requires at least: 3.0.1
-Tested up to: 5.3.2
+Tested up to: 5.6
 Stable tag: 3.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -15,21 +15,21 @@ The complete marijuana dispensary menu solution for WordPress
 
 WP Dispensary is open source canna-tech for dispensary and delivery services who need a simple way to manage online product menus and let patients place orders directly through their own website.
 
-**DEMO**
-
-View a live demo of WP Dispensary - [view demo](https://www.wpdispensary.com/demo/).
+**[view demo](https://demo.wpdispensary.com/)**
 
 ## Dispensary menu features
 
 WP Dispensary is packed with features to enhance the online presence of your cannabis business.
 
-With WP Dispensary you are able to easily create an online menu for your patients to browse, and with the commercial add-on's offered, you can allow patients to place orders directly through your website!
+With **WP Dispensary** you can easily create an online menu for patients to browse your inventory in style. With the commercial add-on's offered, your patients can place orders directly through your website!
+
+**[View Features](https://www.wpdispensary.com/features/)**
 
 ### Menu page auto-created on installation
 
 When you install and activate WP Dispensary, a new "Menu" page is automatically created for you, pre-populated with the default `[wpd_menu]` shortcode.
 
-See all shortcode options in the [documentation](https://www.wpdispensary.com/section/shortcodes/)
+**[View Documentation](https://www.wpdispensary.com/articles/creating-a-menu-page-using-wp-dispensary-shortcodes/)**
 
 ## Define your dispensary style
 
@@ -93,7 +93,7 @@ Visit our [extensions page](https://www.wpdispensary.com/add-ons) to find out ev
 
 = 3.3.3 =
 *   Added shelf and strain type to Edibles REST API endpoint in `admin/wp-dispensary-rest-api.php`
-*   Added file to store the code for 6 upcoming depreciated shortcodes in `admin/depreciated-shortcodes.php`
+*   Added file to store the code for 6 upcoming deprecated shortcodes in `admin/deprecated-shortcodes.php`
 *   Updated codes used for flower prices in prices table output in `admin/wp-dispensary-data-output.php`
 *   Updated admin settings logo file to use the new WP Dispensary logo in `admin/images/wpd-logo.png`
 *   Updated `.pot` file with text strings for localization in `languages/wp-dispensary.pot`
@@ -403,7 +403,7 @@ Visit our [extensions page](https://www.wpdispensary.com/add-ons) to find out ev
 *   Added CBG to list of compound details in `admin/wp-dispensary-rest-api.php`
 *   Added vendor taxonomy to flush rewrite rules on plugin activation in `includes/wp-dispensary-activator.php`
 *   Fixed various debug errors for undefined variables in `admin/wp-dispensary-shortcodes.php`
-*   Fixed depreciated string value in get_bloginfo function in `admin/wp-dispensary-shortcodes.php`
+*   Fixed deprecated string value in get_bloginfo function in `admin/wp-dispensary-shortcodes.php`
 *   Fixed bug in CBA variable names in `admin/wp-dispensary-shortcodes.php`
 *   Fixed bug in Concentrates widget form category default `admin/post-types/wp-dispensary-widgets.php`
 *   Rebuilt the admin Settings for WP Dispensary in `admin/wp-dispensary-admin-settings.php`

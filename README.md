@@ -3,19 +3,23 @@
 
 ![Cannabis Dispensary WordPress Plugin](https://www.wpdispensary.com/wp-content/uploads/2018/03/wpd-github-readme.jpg)
 
-:raised_hand: **WAIT!** This repo is under active development. Download the latest stable release :point_right: [v3.3.4](http://downloads.wordpress.org/plugin/wp-dispensary.zip?utm_source=github&utm_medium=button&utm_campaign=Github).
+:raised_hand: **WAIT!** This repo is under active development. Download the latest stable release: [v3.3.5](http://downloads.wordpress.org/plugin/wp-dispensary.zip?utm_source=github&utm_medium=button&utm_campaign=Github).
+
+:point_right: **[View Demo](https://demo.wpdispensary.com/)**
 
 ## Dispensary Menu Features
 
 WP Dispensary is packed with features to enhance the online presence of your cannabis business.
 
-With WP Dispensary you are able to easily create an online menu for your patients to browse, and with the commercial add-on's offered, you can allow patients to place orders directly through your website!
+With **WP Dispensary** you can easily create an online menu for patients to browse your inventory in style. **[Go Pro](https://wpdispensary.com/pro/)** and your patients can place orders directly through your website!
+
+:point_right: **[View Features](https://www.wpdispensary.com/features/)**
 
 ### Menu page auto-created on installation
 
 When you install and activate WP Dispensary, a new "Menu" page is automatically created for you, pre-populated with the default `[wpd_menu]` shortcode.
 
-See all shortcode options in the [documentation](https://www.wpdispensary.com/section/shortcodes/)
+:point_right: **[View Documentation](https://www.wpdispensary.com/articles/creating-a-menu-page-using-wp-dispensary-shortcodes/)**
 
 ## Define your dispensary style
 

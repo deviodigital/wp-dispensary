@@ -29,6 +29,9 @@ class WP_Dispensary_Permalink_Settings {
 	 */
 	public function register_wpd_settings_fields() {
 		// Register Flowers slug.
+		register_setting( 'permalink', 'wpd_products_slug', 'esc_attr' );
+		add_settings_field( 'wpd_products_slug', '<label for="wpd_products_slug">' . esc_html__( 'Products Base', 'wp-dispensary' ) . '</label>', array( &$this, 'wpd_products_fields_html' ), 'permalink', 'optional' );
+		// Register Flowers slug.
 		register_setting( 'permalink', 'wpd_flowers_slug', 'esc_attr' );
 		add_settings_field( 'wpd_flowers_slug', '<label for="wpd_flowers_slug">' . esc_html__( 'Flowers Base', 'wp-dispensary' ) . '</label>', array( &$this, 'wpd_flowers_fields_html' ), 'permalink', 'optional' );
 		// Register Concentrates slug.
@@ -46,6 +49,14 @@ class WP_Dispensary_Permalink_Settings {
 		// Register Growers slug.
 		register_setting( 'permalink', 'wpd_growers_slug', 'esc_attr' );
 		add_settings_field( 'wpd_growers_slug', '<label for="wpd_growers_slug">' . esc_html__( 'Growers Base', 'wp-dispensary' ) . '</label>', array( &$this, 'wpd_growers_fields_html' ), 'permalink', 'optional' );
+	}
+
+	/**
+	 * HTML for Products permalink setting.
+	 */
+	public function wpd_products_fields_html() {
+		$wpd_products_slug = get_option( 'wpd_products_slug' );
+		echo '<input type="text" class="regular-text code" id="wpd_products_slug" name="wpd_products_slug" placeholder="products" value="' . esc_attr( $wpd_products_slug ) . '" />';
 	}
 
 	/**
@@ -104,6 +115,13 @@ class WP_Dispensary_Permalink_Settings {
 			return;
 		}
 
+		// Save settings - Products.
+		if ( isset( $_POST['permalink_structure'] ) ||
+			 isset( $_POST['wpd_products_slug'] ) &&
+			 wp_verify_nonce( wp_unslash( $_POST['wpd_permalinks_nonce'] ), 'wp-dispensary' ) ) {
+				$wpd_products_slug = sanitize_title( wp_unslash( $_POST['wpd_products_slug'] ) );
+				update_option( 'wpd_products_slug', $wpd_products_slug );
+		}
 		// Save settings - Flowers.
 		if ( isset( $_POST['permalink_structure'] ) ||
 			 isset( $_POST['wpd_flowers_slug'] ) &&

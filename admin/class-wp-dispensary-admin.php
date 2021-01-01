@@ -17,7 +17,7 @@
  *
  * @package    WP_Dispensary
  * @subpackage WP_Dispensary/admin
- * @author     Robert DeVore <deviodigital@gmail.com>
+ * @author     WP Dispensary <contact@wpdispensary.com>
  */
 class WP_Dispensary_Admin {
 
@@ -64,9 +64,7 @@ class WP_Dispensary_Admin {
 	 * @return void
 	 */
 	public function enqueue_styles() {
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wp-dispensary-admin.css', array(), $this->version, 'all' );
-
 	}
 
 	/**
@@ -78,9 +76,15 @@ class WP_Dispensary_Admin {
 	 * @return void
 	 */
 	public function enqueue_scripts() {
-
+		// Add the main admin js file.
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-dispensary-admin.js', array( 'jquery' ), $this->version, false );
-
+		// Only localize script on the Edit screen.
+		if ( 'edit' == $_GET['action'] ) {
+			// Localize the js file.
+			wp_localize_script( $this->plugin_name, 'wpd_script_vars', array(
+				'product_type' => get_post_meta( $_GET['post'], 'product_type', true )
+			) );
+		}
 	}
 }
 
@@ -94,7 +98,7 @@ class WP_Dispensary_Admin {
  * @return void
  */
 function wpdispensary_right_now_content_table_end() {
-	$args       = array(
+	$args = array(
 		'public'   => true,
 		'_builtin' => false,
 	);

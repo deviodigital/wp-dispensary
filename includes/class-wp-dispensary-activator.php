@@ -17,7 +17,7 @@
  * @since      1.0.0
  * @package    WP_Dispensary
  * @subpackage WP_Dispensary/includes
- * @author     Robert DeVore <deviodigital@gmail.com>
+ * @author     WP Dispensary <contact@wpdispensary.com>
  */
 class WP_Dispensary_Activator {
 
@@ -35,37 +35,28 @@ class WP_Dispensary_Activator {
 	 */
 	public static function activate() {
 		/**
-		 * Custom Post Types
+		 * Custom Post Type
 		 */
-		wpdispensary_flowers();
-		wpdispensary_edibles();
-		wpdispensary_concentrates();
-		wpdispensary_prerolls();
-		wpdispensary_topicals();
-		wpdispensary_growers();
+		wp_dispensary_products_post_type();
 
 		/**
 		 * Taxonomies
 		 */
-		wpdispensary_aroma();
-		wpdispensary_flavor();
-		wpdispensary_effect();
-		wpdispensary_symptom();
-		wpdispensary_condition();
-		wpdispensary_ingredient();
-		wpdispensary_vendor();
-		wpdispensary_shelf_type();
-		wpdispensary_strain_type();
-		wpdispensary_allergens();
+		wp_dispensary_aroma();
+		wp_dispensary_flavor();
+		wp_dispensary_effect();
+		wp_dispensary_symptom();
+		wp_dispensary_condition();
+		wp_dispensary_ingredient();
+		wp_dispensary_vendor();
+		wp_dispensary_shelf_type();
+		wp_dispensary_strain_type();
+		wp_dispensary_allergens();
 
 		/**
 		 * Custom Categories
 		 */
-		wpdispensary_flowercategory();
-		wpdispensary_ediblecategory();
-		wpdispensary_concentratecategory();
-		wpdispensary_topicalcategory();
-		wpdispensary_growerscategory();
+		wp_dispensary_products_categories();
 
 		/**
 		 * Flush Rewrite Rules
